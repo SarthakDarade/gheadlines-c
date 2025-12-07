@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    body {
+        @apply antialiased text-gray-900 bg-white;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        @apply font-serif-display;
+    }
+}
+
+@layer components {
+    .container {
+        @apply max-w-[1140px] mx-auto px-4;
+    }
+
+    .btn-primary {
+        @apply bg-[#003D6B] text-white px-6 py-2 rounded-sm font-bold uppercase tracking-wider hover:bg-[#002a4d] transition duration-200;
+    }
+
+    .form-input {
+        @apply w-full border-gray-300 rounded-sm focus:border-[#003D6B] focus:ring focus:ring-[#003D6B] focus:ring-opacity-20 transition duration-200;
+    }
+}
+
+@layer utilities {
+    .font-serif-display {
+        font-family: 'Playfair Display', serif;
+    }
+
+    .font-serif-body {
+        font-family: 'Merriweather', serif;
+    }
+
+    /* Text Selection */
+    ::selection {
+        @apply bg-[#003D6B] text-white;
+    }
+}
+
+/* Custom Animations */
+.fade-in-up {
+    animation: fadeInUp 0.5s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Utilities */
+@media (max-width: 768px) {
+    .hide-mobile { display: none !important; }
+    .show-mobile { display: block !important; }
+}

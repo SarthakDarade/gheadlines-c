@@ -1,0 +1,132 @@
+{{template "header" .}}
+{{template "navbar" .}}
+
+<main class="flex-grow bg-white">
+    <!-- Category Header -->
+    <header class="bg-gray-50 border-b border-gray-200 py-12 md:py-16">
+        <div class="container mx-auto px-4 text-center">
+            <span class="text-xs font-bold uppercase tracking-[0.2em] text-primary mb-4 block">Category</span>
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif-display font-bold text-gray-900 mb-4">
+                {{.CurrentCategory}}</h1>
+            <p class="text-lg text-gray-500 font-serif-body max-w-2xl mx-auto">Latest news, analysis, and reports from
+                the world of {{.CurrentCategory}}.</p>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 py-12">
+        <!-- Featured Story -->
+        {{if .FeaturedArticle}}
+        <section class="mb-16">
+            <article class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center group">
+                <div class="lg:col-span-8">
+                    <a href="/article/{{.FeaturedArticle.Slug}}" class="block overflow-hidden rounded-sm aspect-[16/9]">
+                        <img src="{{.FeaturedArticle.ImageURL}}" alt="{{.FeaturedArticle.Title}}"
+                            class="w-full h-full object-cover transition duration-700 group-hover:scale-105">
+                    </a>
+                </div>
+                <div class="lg:col-span-4">
+                    <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-primary mb-3">
+                        <span>Featured</span>
+                        <span class="text-gray-300">|</span>
+                        <span class="text-gray-500 font-medium normal-case">{{.FeaturedArticle.Date}}</span>
+                    </div>
+                    <h2
+                        class="text-3xl font-serif-display font-bold text-gray-900 leading-tight mb-4 group-hover:text-primary transition-colors">
+                        <a href="/article/{{.FeaturedArticle.Slug}}">{{.FeaturedArticle.Title}}</a>
+                    </h2>
+                    <p class="text-gray-600 font-serif-body leading-relaxed mb-6 line-clamp-4">
+                        {{.FeaturedArticle.Excerpt}}
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <img src="{{.FeaturedArticle.AuthorImage}}" alt="{{.FeaturedArticle.Author}}"
+                            class="w-8 h-8 rounded-full object-cover">
+                        <span
+                            class="text-xs font-bold uppercase tracking-wide text-gray-700">{{.FeaturedArticle.Author}}</span>
+                    </div>
+                </div>
+            </article>
+        </section>
+        {{end}}
+
+        <!-- Filters (Visual only for now) -->
+        <div class="flex items-center justify-between border-b border-gray-200 pb-4 mb-8">
+            <h3 class="text-lg font-sans font-bold uppercase tracking-widest text-gray-900">Latest Stories</h3>
+            <div class="flex gap-6 text-xs font-bold uppercase tracking-wider text-gray-500">
+                <a href="#" class="text-primary">All</a>
+                <a href="#" class="hover:text-primary transition">Trending</a>
+                <a href="#" class="hover:text-primary transition">Most Read</a>
+            </div>
+        </div>
+
+        <!-- Article Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+            {{range .Articles}}
+            <article class="group flex flex-col h-full">
+                <a href="/article/{{.Slug}}" class="block overflow-hidden rounded-sm mb-4 aspect-[3/2]">
+                    <img src="{{.ImageURL}}" alt="{{.Title}}"
+                        class="w-full h-full object-cover transition duration-500 group-hover:scale-105">
+                </a>
+                <div class="flex-1 flex flex-col">
+                    <div
+                        class="flex items-center gap-3 text-[10px] text-gray-500 mb-3 font-sans uppercase tracking-widest">
+                        <span class="text-primary font-bold">{{.Category}}</span>
+                        <span>•</span>
+                        <span>{{.Date}}</span>
+                    </div>
+                    <h2
+                        class="text-xl font-serif-display font-bold text-gray-900 leading-tight mb-3 group-hover:text-primary transition-colors">
+                        <a href="/article/{{.Slug}}">{{.Title}}</a>
+                    </h2>
+                    <p class="text-gray-600 font-serif-body text-sm leading-relaxed line-clamp-3 mb-4 flex-1">
+                        {{.Excerpt}}
+                    </p>
+                    <div class="flex items-center gap-2 mt-auto pt-4 border-t border-gray-100">
+                        <span class="text-xs font-medium text-gray-500">By {{.Author}}</span>
+                    </div>
+                </div>
+            </article>
+            {{end}}
+        </div>
+
+        <!-- Pagination -->
+        <div class="mt-16 flex justify-center">
+            <nav class="flex items-center gap-2">
+                <!-- Previous Button -->
+                {{if gt .CurrentPage 1}}
+                <a href="?page={{sub .CurrentPage 1}}"
+                    class="w-10 h-10 flex items-center justify-center border border-gray-200 rounded-sm text-gray-500 hover:bg-gray-50 hover:text-primary transition">
+                    <i class="ph ph-caret-left"></i>
+                </a>
+                {{else}}
+                <span
+                    class="w-10 h-10 flex items-center justify-center border border-gray-100 rounded-sm text-gray-300 cursor-not-allowed">
+                    <i class="ph ph-caret-left"></i>
+                </span>
+                {{end}}
+
+                <!-- Page Numbers -->
+                {{range .Pages}}
+                <a href="?page={{.}}"
+                    class="w-10 h-10 flex items-center justify-center rounded-sm text-sm font-bold transition {{if eq . $.CurrentPage}}bg-primary text-white{{else}}border border-gray-200 text-gray-700 hover:bg-gray-50 hover:text-primary{{end}}">
+                    {{.}}
+                </a>
+                {{end}}
+
+                <!-- Next Button -->
+                {{if lt .CurrentPage .TotalPages}}
+                <a href="?page={{add .CurrentPage 1}}"
+                    class="w-10 h-10 flex items-center justify-center border border-gray-200 rounded-sm text-gray-500 hover:bg-gray-50 hover:text-primary transition">
+                    <i class="ph ph-caret-right"></i>
+                </a>
+                {{else}}
+                <span
+                    class="w-10 h-10 flex items-center justify-center border border-gray-100 rounded-sm text-gray-300 cursor-not-allowed">
+                    <i class="ph ph-caret-right"></i>
+                </span>
+                {{end}}
+            </nav>
+        </div>
+    </div>
+</main>
+
+{{template "footer" .}}

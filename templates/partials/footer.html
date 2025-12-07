@@ -1,0 +1,55 @@
+{{define "footer"}}
+<footer class="bg-news-gray text-white mt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <!-- About -->
+            <div>
+                <h3 class="text-lg font-bold mb-4">About</h3>
+                <p class="text-gray-300 text-sm">
+                    Global Headlines delivers breaking news and in-depth analysis from around the world.
+                </p>
+            </div>
+            
+            <!-- Categories -->
+            <div>
+                <h3 class="text-lg font-bold mb-4">Categories</h3>
+                <ul class="space-y-2 text-sm">
+                    {{if .Categories}}
+                        {{range .Categories}}
+                        <li>
+                            <a href="/category/{{.Slug}}" class="text-gray-300 hover:text-white transition-colors">
+                                {{.Name}}
+                            </a>
+                        </li>
+                        {{end}}
+                    {{end}}
+                </ul>
+            </div>
+            
+            <!-- Links -->
+            <div>
+                <h3 class="text-lg font-bold mb-4">Links</h3>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="/" class="text-gray-300 hover:text-white transition-colors">Home</a></li>
+                    <li><a href="/sitemap.xml" class="text-gray-300 hover:text-white transition-colors">Sitemap</a></li>
+                    <li><a href="/robots.txt" class="text-gray-300 hover:text-white transition-colors">Robots.txt</a></li>
+                </ul>
+            </div>
+            
+            <!-- Contact -->
+            <div>
+                <h3 class="text-lg font-bold mb-4">Contact</h3>
+                <p class="text-gray-300 text-sm">
+                    Stay updated with the latest news from around the globe.
+                </p>
+            </div>
+        </div>
+        
+        <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400">
+            <p>&copy; {{.CurrentYear}} Global Headlines. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+{{end}}
+
+

@@ -1,0 +1,285 @@
+{{define "navbar"}}
+<header class="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm transition-all duration-300"
+    id="main-header">
+
+    <!-- Breaking News Ticker -->
+    <div
+        class="bg-primary text-white text-[10px] font-bold uppercase tracking-widest py-1.5 overflow-hidden relative border-b border-[#002a4d]">
+        <div class="container mx-auto px-4 flex items-center">
+            <span class="mr-4 bg-red-600 px-2 py-0.5 rounded-sm shrink-0 shadow-sm animate-pulse">Breaking</span>
+            <div class="overflow-hidden w-full relative h-4">
+                <div id="breaking-ticker"
+                    class="absolute whitespace-nowrap flex gap-8 transition-transform duration-1000 ease-linear"
+                    style="animation: marquee 20s linear infinite;">
+                    <!-- JS will populate -->
+                    <span>Loading global headlines...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Bar -->
+    <div class="bg-gray-50 border-b border-gray-100 py-1 hidden md:block">
+        <div
+            class="container mx-auto px-4 flex justify-between items-center text-[11px] uppercase tracking-wider font-sans text-gray-500 font-medium">
+            <div class="flex items-center gap-4">
+                <span>{{.CurrentDate}}</span>
+                <!-- Weather Widget (Minimalistic) -->
+                <div id="weather-widget"
+                    class="hidden md:flex items-center gap-2 cursor-pointer hover:text-primary transition">
+
+                    <!-- Content -->
+                    <div id="weather-content" class="hidden flex items-center gap-2">
+                        <div class="flex items-center gap-1 font-bold">
+                            <!-- Icon is set dynamically via JS -->
+                            <i id="weather-icon" class="ph-fill ph-sun text-yellow-500 text-sm"></i>
+                            <span id="weather-temp" class="font-mono text-gray-600">--°C</span>
+                        </div>
+                        <span id="weather-city"
+                            class="text-[11px] font-bold text-gray-500 uppercase tracking-widest truncate max-w-[80px]">
+                            Locating
+                        </span>
+                    </div>
+
+                    <!-- Minimal Loader -->
+                    <div id="weather-skeleton" class="flex items-center gap-1">
+                        <i class="ph ph-circle-notch animate-spin text-xs text-gray-400"></i>
+                        <span class="text-xs text-gray-400">Weather</span>
+                    </div>
+                </div>
+
+                <span id="market-widget" class="flex items-center gap-1 font-bold"></span>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="#" class="hover:text-primary transition">Edition: IN</a>
+                <a href="/subscribe" class="hover:text-primary transition">Subscribe</a>
+                <a href="/editorial-team" class="hover:text-primary transition">Editorial Team</a>
+                {{if .User}}
+                <a href="/user/profile" class="hover:text-primary transition font-semibold">Profile</a>
+                <a href="/auth/signout" class="hover:text-primary transition">Sign Out</a>
+                {{else}}
+                <a href="/signin" class="hover:text-primary transition">Sign In</a>
+                <a href="/signup" class="hover:text-primary transition font-semibold">Sign Up</a>
+                {{end}}
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Navbar -->
+    <div class="container mx-auto px-4">
+        <div class="flex justify-between items-center h-16 md:h-20">
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden p-2 text-gray-900"
+                onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                <i class="ph ph-list text-2xl"></i>
+            </button>
+
+            <!-- Logo -->
+            <a href="/" class="flex-shrink-0 group flex flex-col items-center md:items-start">
+                <div class="font-serif-display font-black text-3xl md:text-4xl tracking-tighter leading-none">
+                    <span class="text-black">Global</span><span class="text-primary">Headlines</span>
+                </div>
+                <span class="text-[10px] uppercase tracking-[0.2em] text-gray-400 hidden md:block">Truth • Integrity •
+                    Insight</span>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <nav
+                class="hidden md:flex items-center gap-6 lg:gap-8 font-sans font-bold text-xs uppercase tracking-widest text-gray-800">
+                <a href="/"
+                    class='hover:text-primary transition-colors py-2 border-b-2 border-transparent hover:border-primary {{if eq .ActiveCategory ""}}text-primary border-primary{{end}}'>Home</a>
+                <a href="/category/world"
+                    class='hover:text-primary transition-colors py-2 border-b-2 border-transparent hover:border-primary {{if eq .ActiveCategory "world"}}text-primary border-primary{{end}}'>World</a>
+                <a href="/category/business"
+                    class='hover:text-primary transition-colors py-2 border-b-2 border-transparent hover:border-primary {{if eq .ActiveCategory "business"}}text-primary border-primary{{end}}'>Business</a>
+                <a href="/category/technology"
+                    class='hover:text-primary transition-colors py-2 border-b-2 border-transparent hover:border-primary {{if eq .ActiveCategory "technology"}}text-primary border-primary{{end}}'>Tech</a>
+
+                <!-- More Dropdown -->
+                <div class="relative group">
+                    <button
+                        class="hover:text-primary transition-colors py-2 border-b-2 border-transparent hover:border-primary flex items-center gap-1">
+                        More <i class="ph ph-caret-down text-[10px]"></i>
+                    </button>
+                    <div
+                        class="absolute left-0 top-full w-48 bg-white shadow-xl border-t-2 border-primary hidden group-hover:block z-50">
+                        <div
+                            class="py-2 flex flex-col font-sans font-bold text-xs uppercase tracking-widest text-gray-800">
+                            <a href="/category/politics"
+                                class="px-4 py-3 hover:bg-gray-50 hover:text-primary border-b border-gray-50 last:border-0 block">Politics</a>
+                            <a href="/category/sports"
+                                class="px-4 py-3 hover:bg-gray-50 hover:text-primary border-b border-gray-50 last:border-0 block">Sports</a>
+                            <a href="/category/entertainment"
+                                class="px-4 py-3 hover:bg-gray-50 hover:text-primary border-b border-gray-50 last:border-0 block">Entertainment</a>
+                            <a href="/category/health"
+                                class="px-4 py-3 hover:bg-gray-50 hover:text-primary border-b border-gray-50 last:border-0 block">Health</a>
+                            <a href="/category/culture"
+                                class="px-4 py-3 hover:bg-gray-50 hover:text-primary border-b border-gray-50 last:border-0 block">Culture</a>
+                            <a href="/category/science"
+                                class="px-4 py-3 hover:bg-gray-50 hover:text-primary border-b border-gray-50 last:border-0 block">Science</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Search & Actions -->
+            <div class="flex items-center gap-4">
+                <a href="/search" class="p-2 text-gray-500 hover:text-primary transition">
+                    <i class="ph ph-magnifying-glass text-xl"></i>
+                </a>
+                <a href="/subscribe"
+                    class="hidden md:inline-block bg-primary text-white px-5 py-2 rounded-sm text-xs font-bold uppercase tracking-wider hover:bg-[#002a4d] transition shadow-sm">Subscribe</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu"
+        class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full left-0 shadow-lg z-50">
+        <nav class="flex flex-col p-4 space-y-4 font-sans font-bold text-sm uppercase tracking-wide text-gray-800">
+            <a href="/" class="block py-2 border-b border-gray-50 hover:text-primary">Home</a>
+            <a href="/category/world" class="block py-2 border-b border-gray-50 hover:text-primary">World</a>
+            <a href="/category/business" class="block py-2 border-b border-gray-50 hover:text-primary">Business</a>
+            <a href="/category/technology" class="block py-2 border-b border-gray-50 hover:text-primary">Technology</a>
+            <a href="/category/politics" class="block py-2 border-b border-gray-50 hover:text-primary">Politics</a>
+            <a href="/category/sports" class="block py-2 border-b border-gray-50 hover:text-primary">Sports</a>
+            <a href="/category/entertainment"
+                class="block py-2 border-b border-gray-50 hover:text-primary">Entertainment</a>
+            <a href="/category/health" class="block py-2 border-b border-gray-50 hover:text-primary">Health</a>
+            <a href="/category/culture" class="block py-2 border-b border-gray-50 hover:text-primary">Culture</a>
+            <a href="/category/science" class="block py-2 border-b border-gray-50 hover:text-primary">Science</a>
+            <a href="/subscribe" class="block py-2 text-primary">Subscribe</a>
+            <a href="/editorial-team" class="block py-2 text-primary">Editorial Team</a>
+            {{if .User}}
+            <a href="/user/profile" class="block py-2 text-primary">Profile</a>
+            <a href="/auth/signout" class="block py-2 text-primary">Sign Out</a>
+            {{else}}
+            <a href="/signin" class="block py-2 text-primary">Sign In</a>
+            <a href="/signup" class="block py-2 text-primary">Sign Up</a>
+            {{end}}
+        </nav>
+    </div>
+</header>
+<style>
+    @keyframes marquee {
+        0% {
+            transform: translateX(100%);
+        }
+
+        100% {
+            transform: translateX(-100%);
+        }
+    }
+
+    .animate-marquee {
+        animation: marquee 30s linear infinite;
+    }
+
+    .animate-marquee:hover {
+        animation-play-state: paused;
+    }
+</style>
+<script>
+    // --- Feature 1: Breaking News ---
+    function fetchBreakingNews() {
+        const ticker = document.getElementById('breaking-ticker');
+        fetch('/api/breaking-news')
+            .then(res => res.json())
+            .then(data => {
+                if (data && data.length > 0) {
+                    ticker.innerHTML = '';
+                    data.forEach(item => {
+                        const span = document.createElement('span');
+                        span.className = 'hover:text-gray-200 cursor-pointer mx-4';
+                        span.textContent = '• ' + item.headline;
+                        span.onclick = () => window.location.href = item.url;
+                        ticker.appendChild(span);
+                    });
+                } else {
+                    ticker.innerHTML = '<span>No breaking news at this moment. Stay tuned.</span>';
+                }
+            })
+            .catch(err => console.error('Breaking news fetch failed:', err));
+    }
+    fetchBreakingNews();
+
+    // --- Feature 2: Weather Widget (ES Module) ---
+    /*
+       Note: We use a dynamic import shim or simple type="module" block below.
+       This block handles the visual update from the separate module.
+    */
+</script>
+<script type="module">
+    import { getLocationWeather } from '/static/js/hooks/useLocationWeather.js';
+
+    const cityEl = document.getElementById('weather-city');
+    const tempEl = document.getElementById('weather-temp');
+    const iconEl = document.getElementById('weather-icon');
+    const skeletonEl = document.getElementById('weather-skeleton');
+    const contentEl = document.getElementById('weather-content');
+
+    // Initial State
+    function showLoading() {
+        if (skeletonEl) skeletonEl.classList.remove('hidden');
+        if (contentEl) contentEl.classList.add('hidden');
+    }
+
+    function showData(city, temp, iconClass) {
+        if (skeletonEl) skeletonEl.classList.add('hidden');
+        if (contentEl) contentEl.classList.remove('hidden');
+
+        // Text Content
+        if (cityEl) cityEl.textContent = city;
+        if (tempEl) tempEl.textContent = `${temp}°C`;
+
+        // Icon
+        if (iconEl) iconEl.className = `ph-fill ${iconClass} text-yellow-500 text-lg`;
+
+        // Animation
+        if (contentEl) contentEl.classList.add('animate-fade-in');
+    }
+
+    function showError() {
+        if (skeletonEl) skeletonEl.classList.add('hidden');
+        if (contentEl) contentEl.classList.remove('hidden');
+        if (cityEl) cityEl.textContent = "Unavailable";
+        if (tempEl) tempEl.textContent = "--";
+        if (iconEl) iconEl.className = "ph-fill ph-warning-circle text-gray-400";
+    }
+
+    // Run Logic
+    if (document.getElementById('weather-widget')) {
+        showLoading();
+
+        getLocationWeather()
+            .then(data => {
+                showData(data.city, data.temperature, data.icon);
+            })
+            .catch(err => {
+                console.error("Weather Widget Failed:", err);
+                showError();
+            });
+    }
+</script>
+<script>
+
+    // --- Market Data ---
+    function updateMarketData() {
+        fetch('/api/market-data')
+            .then(function (response) { return response.json(); })
+            .then(function (data) {
+                var el = document.getElementById('market-widget');
+                if (el) {
+                    var icon = data.up ? 'ph-trend-up' : 'ph-trend-down';
+                    var color = data.up ? 'text-green-600' : 'text-red-600';
+                    var sign = data.up ? '+' : '';
+                    el.className = 'flex items-center gap-1 font-bold ' + color;
+                    el.innerHTML = '<i class="ph ' + icon + '"></i> ' + data.index + ' ' + sign + data.change.toFixed(2) + ' (' + sign + data.percent.toFixed(2) + '%)';
+                }
+            })
+            .catch(function (err) { console.log('Market fetch failed', err); });
+    }
+    updateMarketData();
+    setInterval(updateMarketData, 10000);
+</script>
+{{end}}

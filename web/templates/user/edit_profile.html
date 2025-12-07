@@ -1,0 +1,227 @@
+{{template "header" .}}
+{{template "navbar" .}}
+
+<main class="flex-grow bg-gray-50">
+    <!-- Header -->
+    <section class="bg-white border-b border-gray-100 py-8">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-serif-display font-bold text-gray-900 mb-2">Edit Profile</h1>
+                    <p class="text-gray-500">Update your personal information and avatar</p>
+                </div>
+                <a href="/user/profile" class="text-gray-600 hover:text-primary transition">
+                    <i class="ph ph-x text-2xl"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Split Layout -->
+    <section class="py-12">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+                <!-- Left: Preview -->
+                <div class="order-2 lg:order-1">
+                    <div class="sticky top-24">
+                        <h2 class="text-xl font-bold mb-4 text-gray-700">Preview</h2>
+                        <div class="bg-white rounded-3xl shadow-soft-xl p-8 hover-lift">
+                            <div class="flex flex-col items-center text-center">
+                                <!-- Avatar Preview -->
+                                <div
+                                    class="w-32 h-32 rounded-full overflow-hidden shadow-glow ring-4 ring-primary/20 mb-6">
+                                    <img id="avatar-preview"
+                                        src="{{if .Profile.AvatarURL}}{{.Profile.AvatarURL}}{{else}}https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop{{end}}"
+                                        alt="Avatar Preview" class="w-full h-full object-cover">
+                                </div>
+
+                                <!-- Name Preview -->
+                                <h3 id="name-preview" class="text-2xl font-serif-display font-bold text-gray-900 mb-1">
+                                    {{if .Profile.FullName}}{{.Profile.FullName}}{{else}}Your Name{{end}}
+                                </h3>
+                                <p id="username-preview" class="text-gray-500 mb-4">
+                                    @{{if .Profile.Username}}{{.Profile.Username}}{{else}}username{{end}}
+                                </p>
+
+                                <!-- Bio Preview -->
+                                <p id="bio-preview" class="text-gray-600 leading-relaxed mb-6">
+                                    {{if .Profile.Bio}}{{.Profile.Bio}}{{else}}Your bio will appear here...{{end}}
+                                </p>
+
+                                <!-- Details Preview -->
+                                <div class="w-full space-y-3 text-sm text-gray-600 text-left">
+                                    <div id="occupation-preview"
+                                        class="flex items-center gap-2 {{if not .Profile.Occupation}}hidden{{end}}">
+                                        <i class="ph ph-briefcase text-primary"></i>
+                                        <span>{{.Profile.Occupation}}</span>
+                                    </div>
+                                    <div id="location-preview"
+                                        class="flex items-center gap-2 {{if not .Profile.Location}}hidden{{end}}">
+                                        <i class="ph ph-map-pin text-primary"></i>
+                                        <span>{{.Profile.Location}}</span>
+                                    </div>
+                                    <div id="website-preview"
+                                        class="flex items-center gap-2 {{if not .Profile.Website}}hidden{{end}}">
+                                        <i class="ph ph-link text-primary"></i>
+                                        <span>{{.Profile.Website}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Form -->
+                <div class="order-1 lg:order-2">
+                    <h2 class="text-xl font-bold mb-4 text-gray-700">Edit Information</h2>
+                    <form action="/user/update" method="POST" class="bg-white rounded-3xl shadow-soft-xl p-8 space-y-6">
+
+                        <!-- Avatar URL (Text Input) -->
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-3">Profile Picture URL</label>
+                            <div class="flex flex-col gap-4">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-20 h-20 rounded-full overflow-hidden shadow-md shrink-0">
+                                        <img id="avatar-thumb"
+                                            src="{{if .Profile.AvatarURL}}{{.Profile.AvatarURL}}{{else}}https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop{{end}}"
+                                            alt="Avatar" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="flex-grow">
+                                        <input type="url" id="avatar_url" name="avatar_url"
+                                            value="{{.Profile.AvatarURL}}" placeholder="https://..."
+                                            class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all">
+                                        <p class="text-[10px] text-gray-400 mt-1">Paste a direct link to your image
+                                            (e.g. from Unsplash, Imgur)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Full Name -->
+                        <div class="relative group">
+                            <input type="text" id="fullname" name="fullname" value="{{.Profile.FullName}}"
+                                class="peer w-full px-4 py-3 rounded-xl border-2 border-gray-100 bg-gray-50 focus:bg-white focus:border-primary focus:ring-0 transition-all outline-none">
+                            <label for="fullname"
+                                class="absolute left-4 -top-2.5 text-xs text-primary bg-white px-1">Full Name</label>
+                        </div>
+
+                        <!-- Username -->
+                        <div class="relative group">
+                            <input type="text" id="username" name="username" value="{{.Profile.Username}}"
+                                class="peer w-full px-4 py-3 rounded-xl border-2 border-gray-100 bg-gray-50 focus:bg-white focus:border-primary focus:ring-0 transition-all outline-none">
+                            <label for="username"
+                                class="absolute left-4 -top-2.5 text-xs text-primary bg-white px-1">Username</label>
+                        </div>
+
+                        <!-- Bio -->
+                        <div class="relative group">
+                            <textarea id="bio" name="bio" rows="4"
+                                class="peer w-full px-4 py-3 rounded-xl border-2 border-gray-100 bg-gray-50 focus:bg-white focus:border-primary focus:ring-0 transition-all outline-none">{{.Profile.Bio}}</textarea>
+                            <label for="bio"
+                                class="absolute left-4 -top-2.5 text-xs text-primary bg-white px-1">Bio</label>
+                        </div>
+
+                        <!-- Occupation -->
+                        <div class="relative group">
+                            <input type="text" id="occupation" name="occupation" value="{{.Profile.Occupation}}"
+                                class="peer w-full px-4 py-3 rounded-xl border-2 border-gray-100 bg-gray-50 focus:bg-white focus:border-primary focus:ring-0 transition-all outline-none">
+                            <label for="occupation"
+                                class="absolute left-4 -top-2.5 text-xs text-primary bg-white px-1">Occupation</label>
+                        </div>
+
+                        <!-- Location -->
+                        <div class="relative group">
+                            <input type="text" id="location" name="location" value="{{.Profile.Location}}"
+                                class="peer w-full px-4 py-3 rounded-xl border-2 border-gray-100 bg-gray-50 focus:bg-white focus:border-primary focus:ring-0 transition-all outline-none">
+                            <label for="location"
+                                class="absolute left-4 -top-2.5 text-xs text-primary bg-white px-1">Location</label>
+                        </div>
+
+                        <!-- Website -->
+                        <div class="relative group">
+                            <input type="url" id="website" name="website" value="{{.Profile.Website}}"
+                                class="peer w-full px-4 py-3 rounded-xl border-2 border-gray-100 bg-gray-50 focus:bg-white focus:border-primary focus:ring-0 transition-all outline-none">
+                            <label for="website"
+                                class="absolute left-4 -top-2.5 text-xs text-primary bg-white px-1">Website</label>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="flex gap-4 pt-4">
+                            <button type="submit"
+                                class="flex-1 bg-primary text-white font-bold py-4 rounded-full shadow-lg hover:shadow-primary/40 hover:-translate-y-1 transition-all duration-300 magnetic-btn">
+                                Save Changes
+                            </button>
+                            <a href="/user/profile"
+                                class="px-8 py-4 bg-gray-100 text-gray-700 rounded-full font-bold hover:bg-gray-200 transition text-center">
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</main>
+
+<script>
+    // Live preview updates
+    document.getElementById('fullname').addEventListener('input', (e) => {
+        document.getElementById('name-preview').textContent = e.target.value || 'Your Name';
+    });
+
+    document.getElementById('username').addEventListener('input', (e) => {
+        document.getElementById('username-preview').textContent = '@' + (e.target.value || 'username');
+    });
+
+    document.getElementById('bio').addEventListener('input', (e) => {
+        document.getElementById('bio-preview').textContent = e.target.value || 'Your bio will appear here...';
+    });
+
+    document.getElementById('occupation').addEventListener('input', (e) => {
+        const preview = document.getElementById('occupation-preview');
+        if (e.target.value) {
+            preview.classList.remove('hidden');
+            preview.querySelector('span').textContent = e.target.value;
+        } else {
+            preview.classList.add('hidden');
+        }
+    });
+
+    document.getElementById('location').addEventListener('input', (e) => {
+        const preview = document.getElementById('location-preview');
+        if (e.target.value) {
+            preview.classList.remove('hidden');
+            preview.querySelector('span').textContent = e.target.value;
+        } else {
+            preview.classList.add('hidden');
+        }
+    });
+
+    document.getElementById('website').addEventListener('input', (e) => {
+        const preview = document.getElementById('website-preview');
+        if (e.target.value) {
+            preview.classList.remove('hidden');
+            preview.querySelector('span').textContent = e.target.value;
+        } else {
+            preview.classList.add('hidden');
+        }
+    });
+
+    // Avatar URL preview
+    document.getElementById('avatar_url').addEventListener('input', (e) => {
+        const url = e.target.value;
+        if (url) {
+            document.getElementById('avatar-preview').src = url;
+            document.getElementById('avatar-thumb').src = url;
+        } else {
+            // Revert to placeholder or existing if empty? For now just placeholder
+            const placeholder = "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop";
+            document.getElementById('avatar-preview').src = placeholder;
+            document.getElementById('avatar-thumb').src = placeholder;
+        }
+    });
+</script>
+
+{{template "footer" .}}

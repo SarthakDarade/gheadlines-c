@@ -1,0 +1,259 @@
+{{template "header" .}}
+{{template "navbar" .}}
+
+<main class="flex-grow bg-gray-50">
+    <!-- Sticky Search Bar -->
+    <section class="bg-white border-b border-gray-200 sticky top-0 z-50 glass-panel">
+        <div class="container mx-auto px-4 py-6">
+            <div class="max-w-4xl mx-auto">
+                <!-- Search Input -->
+                <!-- Search Input -->
+                <form action="/search" method="GET" class="relative">
+                    <input type="text" name="q" id="search-input" placeholder="Search articles, topics..."
+                        value="{{.Query}}"
+                        class="w-full px-6 py-4 pl-14 pr-32 rounded-full border-2 border-gray-200 bg-white focus:border-primary focus:ring-0 transition-all outline-none shadow-soft-md hover-lift text-lg">
+                    <button type="submit"
+                        class="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary transition">
+                        <i class="ph ph-magnifying-glass text-2xl"></i>
+                    </button>
+
+                    <!-- View Toggle -->
+                    <div class="absolute right-4 top-1/2 -translate-y-1/2 flex gap-2 bg-gray-100 p-1 rounded-full">
+                        <button type="button" id="grid-view-btn"
+                            class="view-btn active p-2 rounded-full bg-white shadow-sm">
+                            <i class="ph ph-squares-four text-lg"></i>
+                        </button>
+                        <button type="button" id="list-view-btn"
+                            class="view-btn p-2 rounded-full hover:bg-white transition">
+                            <i class="ph ph-list text-lg"></i>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Auto-suggest Dropdown -->
+                <div id="suggestions"
+                    class="hidden absolute top-full mt-2 w-full bg-white rounded-2xl shadow-soft-2xl border border-gray-100 overflow-hidden">
+                    <div class="p-2">
+                        <div
+                            class="px-4 py-3 hover:bg-gray-50 rounded-xl cursor-pointer flex items-center gap-3 transition">
+                            <i class="ph ph-clock text-gray-400"></i>
+                            <span>AI Revolution in 2025</span>
+                        </div>
+                        <div
+                            class="px-4 py-3 hover:bg-gray-50 rounded-xl cursor-pointer flex items-center gap-3 transition">
+                            <i class="ph ph-clock text-gray-400"></i>
+                            <span>Climate Change Summit</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category Chips -->
+            <div class="flex gap-2 mt-4 overflow-x-auto pb-2">
+                <button
+                    class="chip-btn active px-4 py-2 rounded-full bg-primary text-white font-bold text-sm whitespace-nowrap hover-lift">
+                    All
+                </button>
+                <button
+                    class="chip-btn px-4 py-2 rounded-full bg-white text-gray-700 font-bold text-sm whitespace-nowrap hover-lift border border-gray-200">
+                    Technology
+                </button>
+                <button
+                    class="chip-btn px-4 py-2 rounded-full bg-white text-gray-700 font-bold text-sm whitespace-nowrap hover-lift border border-gray-200">
+                    World
+                </button>
+                <button
+                    class="chip-btn px-4 py-2 rounded-full bg-white text-gray-700 font-bold text-sm whitespace-nowrap hover-lift border border-gray-200">
+                    Business
+                </button>
+                <button
+                    class="chip-btn px-4 py-2 rounded-full bg-white text-gray-700 font-bold text-sm whitespace-nowrap hover-lift border border-gray-200">
+                    Science
+                </button>
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section class="py-12">
+        <div class="container mx-auto px-4">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-8">
+
+                <!-- Filters Sidebar -->
+                <div class="lg:col-span-1">
+                    <div class="bg-white rounded-2xl shadow-soft-md p-6 sticky top-32">
+                        <h3 class="font-bold text-lg mb-4">Filters</h3>
+
+                        <!-- Date Range -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Date Range</label>
+                            <select
+                                class="w-full px-4 py-2 rounded-xl border border-gray-200 bg-gray-50 focus:border-primary focus:ring-0 outline-none">
+                                <option>Any time</option>
+                                <option>Past 24 hours</option>
+                                <option>Past week</option>
+                                <option>Past month</option>
+                                <option>Past year</option>
+                            </select>
+                        </div>
+
+                        <!-- Popularity -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Sort By</label>
+                            <div class="space-y-2">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="sort" value="relevance" checked class="text-primary">
+                                    <span class="text-sm">Relevance</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="sort" value="date" class="text-primary">
+                                    <span class="text-sm">Latest</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="sort" value="popular" class="text-primary">
+                                    <span class="text-sm">Most Popular</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <button
+                            class="w-full px-4 py-2 bg-gray-100 text-gray-700 rounded-full font-bold text-sm hover:bg-gray-200 transition">
+                            Clear Filters
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Results Grid/List -->
+                <div class="lg:col-span-3">
+                    <!-- Results Header -->
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h2 class="text-2xl font-serif-display font-bold">Search Results</h2>
+                            <p class="text-gray-500 text-sm mt-1">Found {{len .Articles}} results for "{{.Query}}"</p>
+                        </div>
+                    </div>
+
+                    {{if .Articles}}
+                    <!-- Grid View -->
+                    <div id="grid-results" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                        {{range .Articles}}
+                        <article onclick="window.location.href='/article/{{.Slug}}'"
+                            class="bg-white rounded-2xl shadow-soft-md overflow-hidden hover-lift group cursor-pointer h-full flex flex-col">
+                            <div class="h-48 bg-gray-200 overflow-hidden relative">
+                                <img src="{{.ImageURL}}" alt="{{.Title}}" loading="lazy"
+                                    class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                                <span
+                                    class="absolute top-3 right-3 px-3 py-1 bg-primary text-white text-xs font-bold rounded-full">
+                                    {{.CategoryObj.Name}}
+                                </span>
+                            </div>
+                            <div class="p-6 flex-1 flex flex-col">
+                                <span class="text-xs text-primary font-bold uppercase">{{.CategoryObj.Name}}</span>
+                                <h3
+                                    class="font-serif-display font-bold text-lg mt-2 mb-2 group-hover:text-primary transition line-clamp-2">
+                                    {{.Title}}
+                                </h3>
+                                <p class="text-sm text-gray-600 mb-4 line-clamp-3">
+                                    {{.Excerpt}}
+                                </p>
+                                <div class="mt-auto flex items-center justify-between text-xs text-gray-500">
+                                    <span>5 min read</span>
+                                    <span>{{.CreatedAt.Format "Jan 02, 2006"}}</span>
+                                </div>
+                            </div>
+                        </article>
+                        {{end}}
+                    </div>
+
+                    <!-- List View -->
+                    <div id="list-results" class="hidden space-y-4">
+                        {{range .Articles}}
+                        <article onclick="window.location.href='/article/{{.Slug}}'"
+                            class="bg-white rounded-2xl shadow-soft-md p-6 hover-lift group cursor-pointer flex flex-col md:flex-row gap-6">
+                            <div
+                                class="w-full md:w-48 h-48 md:h-32 bg-gray-200 rounded-xl overflow-hidden flex-shrink-0">
+                                <img src="{{.ImageURL}}" alt="{{.Title}}" loading="lazy"
+                                    class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex items-start justify-between mb-2">
+                                    <span class="text-xs text-primary font-bold uppercase">{{.CategoryObj.Name}}</span>
+                                </div>
+                                <h3
+                                    class="font-serif-display font-bold text-xl mb-2 group-hover:text-primary transition">
+                                    {{.Title}}
+                                </h3>
+                                <p class="text-sm text-gray-600 mb-3 line-clamp-2">
+                                    {{.Excerpt}}
+                                </p>
+                                <div class="flex items-center gap-4 text-xs text-gray-500">
+                                    <span>5 min read</span>
+                                    <span>•</span>
+                                    <span>{{.CreatedAt.Format "Jan 02, 2006"}}</span>
+                                </div>
+                            </div>
+                        </article>
+                        {{end}}
+                    </div>
+                    {{else}}
+                    <!-- Empty State -->
+                    <div id="empty-state" class="text-center py-16">
+                        <div class="w-32 h-32 mx-auto mb-6 bg-gray-100 rounded-full flex items-center justify-center">
+                            <i class="ph ph-magnifying-glass text-6xl text-gray-300"></i>
+                        </div>
+                        <h3 class="text-2xl font-serif-display font-bold mb-2">No results found</h3>
+                        <p class="text-gray-500 mb-6">Try adjusting your search query</p>
+                        <a href="/search"
+                            class="px-6 py-3 bg-primary text-white rounded-full font-bold hover-lift inline-block">
+                            Clear Search
+                        </a>
+                    </div>
+                    {{end}}
+
+                </div>
+            </div>
+    </section>
+</main>
+
+<script>
+    // View toggle
+    document.getElementById('grid-view-btn').addEventListener('click', () => {
+        document.getElementById('grid-results').classList.remove('hidden');
+        document.getElementById('list-results').classList.add('hidden');
+        document.getElementById('grid-view-btn').classList.add('active', 'bg-white', 'shadow-sm');
+        document.getElementById('list-view-btn').classList.remove('active', 'bg-white', 'shadow-sm');
+    });
+
+    document.getElementById('list-view-btn').addEventListener('click', () => {
+        document.getElementById('list-results').classList.remove('hidden');
+        document.getElementById('grid-results').classList.add('hidden');
+        document.getElementById('list-view-btn').classList.add('active', 'bg-white', 'shadow-sm');
+        document.getElementById('grid-view-btn').classList.remove('active', 'bg-white', 'shadow-sm');
+    });
+
+    // Auto-suggest (demo)
+    document.getElementById('search-input').addEventListener('focus', () => {
+        document.getElementById('suggestions').classList.remove('hidden');
+    });
+
+    document.getElementById('search-input').addEventListener('blur', () => {
+        setTimeout(() => {
+            document.getElementById('suggestions').classList.add('hidden');
+        }, 200);
+    });
+
+    // Category chips
+    document.querySelectorAll('.chip-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.chip-btn').forEach(b => {
+                b.classList.remove('active', 'bg-primary', 'text-white');
+                b.classList.add('bg-white', 'text-gray-700', 'border', 'border-gray-200');
+            });
+            btn.classList.add('active', 'bg-primary', 'text-white');
+            btn.classList.remove('bg-white', 'text-gray-700', 'border', 'border-gray-200');
+        });
+    });
+</script>
+
+{{template "footer" .}}

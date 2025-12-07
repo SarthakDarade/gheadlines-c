@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{if eq .Mode "signin"}}Sign In{{else}}Sign Up{{end}} - {{.SiteName}}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #003D6B 0%, #001F3F 100%);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <div class="min-h-screen flex">
+        <!-- Left Side - Branding -->
+        <div class="hidden lg:flex lg:w-1/2 gradient-bg text-white p-12 flex-col justify-between">
+            <div>
+                <a href="/" class="inline-block">
+                    <div class="font-serif text-4xl font-black tracking-tight">
+                        <span class="text-white">Global</span><span class="text-yellow-400">Headlines</span>
+                    </div>
+                    <p class="text-sm text-gray-300 mt-2 tracking-widest uppercase">Truth • Integrity • Insight</p>
+                </a>
+            </div>
+
+            <div class="space-y-6">
+                <h2 class="text-3xl font-bold">Stay informed with world-class journalism</h2>
+                <div class="space-y-4">
+                    <div class="flex items-start gap-3">
+                        <i class="ph ph-check-circle text-yellow-400 text-2xl flex-shrink-0"></i>
+                        <div>
+                            <h3 class="font-semibold">Breaking News Alerts</h3>
+                            <p class="text-gray-300 text-sm">Get instant notifications on stories that matter</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <i class="ph ph-bookmark-simple text-yellow-400 text-2xl flex-shrink-0"></i>
+                        <div>
+                            <h3 class="font-semibold">Save & Organize</h3>
+                            <p class="text-gray-300 text-sm">Bookmark articles and create reading lists</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <i class="ph ph-user-circle text-yellow-400 text-2xl flex-shrink-0"></i>
+                        <div>
+                            <h3 class="font-semibold">Personalized Feed</h3>
+                            <p class="text-gray-300 text-sm">Get news tailored to your interests</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-sm text-gray-400">
+                © 2025 Global Headlines. All rights reserved.
+            </div>
+        </div>
+
+        <!-- Right Side - Auth Form -->
+        <div class="w-full lg:w-1/2 flex items-center justify-center p-8">
+            <div class="w-full max-w-md">
+                <!-- Mobile Logo -->
+                <div class="lg:hidden mb-8 text-center">
+                    <a href="/" class="inline-block">
+                        <div class="font-serif text-3xl font-black tracking-tight">
+                            <span class="text-gray-900">Global</span><span class="text-blue-600">Headlines</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-xl p-8 md:p-10">
+                    <div class="mb-8">
+                        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+                            {{if eq .Mode "signin"}}Welcome back{{else}}Create your account{{end}}
+                        </h1>
+                        <p class="text-gray-600">
+                            {{if eq .Mode "signin"}}
+                            Don't have an account? <a href="/signup"
+                                class="text-blue-600 hover:text-blue-700 font-semibold">Sign up</a>
+                            {{else}}
+                            Already have an account? <a href="/signin"
+                                class="text-blue-600 hover:text-blue-700 font-semibold">Sign in</a>
+                            {{end}}
+                        </p>
+                    </div>
+
+                    <!-- Social Login Buttons -->
+                    <div class="space-y-3 mb-6">
+                        <button onclick="signInWithGoogle()"
+                            class="w-full flex items-center justify-center gap-3 px-4 py-3 border-2 border-gray-300 rounded-lg hover:bg-gray-50 transition font-medium text-gray-700">
+                            <svg class="w-5 h-5" viewBox="0 0 24 24">
+                                <path fill="#4285F4"
+                                    d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                                <path fill="#34A853"
+                                    d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                                <path fill="#FBBC05"
+                                    d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+                                <path fill="#EA4335"
+                                    d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+                            </svg>
+                            Continue with Google
+                        </button>
+
+                        <button onclick="signInWithLinkedIn()"
+                            class="w-full flex items-center justify-center gap-3 px-4 py-3 border-2 border-gray-300 rounded-lg hover:bg-gray-50 transition font-medium text-gray-700">
+                            <svg class="w-5 h-5" fill="#0A66C2" viewBox="0 0 24 24">
+                                <path
+                                    d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                            </svg>
+                            Continue with LinkedIn
+                        </button>
+                    </div>
+
+                    <div class="relative mb-6">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-gray-300"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm">
+                            <span class="px-4 bg-white text-gray-500">Or continue with email</span>
+                        </div>
+                    </div>
+
+                    <!-- Email/Password Form -->
+                    <form id="authForm" class="space-y-4">
+                        {{if eq .Mode "signup"}}
+                        <div>
+                            <label for="full_name" class="block text-sm font-medium text-gray-700 mb-2">Full
+                                Name</label>
+                            <input type="text" id="full_name" name="full_name" required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                                placeholder="John Doe">
+                        </div>
+                        {{end}}
+
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                            <input type="email" id="email" name="email" required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                                placeholder="you@example.com">
+                        </div>
+
+                        <div>
+                            <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                            <input type="password" id="password" name="password" required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                                placeholder="••••••••">
+                            {{if eq .Mode "signup"}}
+                            <p class="mt-1 text-xs text-gray-500">Must be at least 8 characters</p>
+                            {{end}}
+                        </div>
+
+                        {{if eq .Mode "signin"}}
+                        <div class="flex items-center justify-between">
+                            <label class="flex items-center">
+                                <input type="checkbox"
+                                    class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                <span class="ml-2 text-sm text-gray-600">Remember me</span>
+                            </label>
+                            <a href="/forgot-password" class="text-sm text-blue-600 hover:text-blue-700">Forgot
+                                password?</a>
+                        </div>
+                        {{end}}
+
+                        <button type="submit"
+                            class="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition font-semibold shadow-lg shadow-blue-600/30">
+                            {{if eq .Mode "signin"}}Sign In{{else}}Create Account{{end}}
+                        </button>
+                    </form>
+
+                    <div id="error-message"
+                        class="mt-4 hidden p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm"></div>
+                    <div id="success-message"
+                        class="mt-4 hidden p-3 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm">
+                    </div>
+                </div>
+
+                <p class="mt-6 text-center text-sm text-gray-600">
+                    By continuing, you agree to our <a href="/terms" class="text-blue-600 hover:text-blue-700">Terms of
+                        Service</a> and <a href="/privacy" class="text-blue-600 hover:text-blue-700">Privacy Policy</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const supabaseUrl = '{{.SupabaseURL}}';
+        const supabaseKey = '{{.SupabaseKey}}';
+        const mode = '{{.Mode}}';
+
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+        // Google OAuth
+        async function signInWithGoogle() {
+            const { data, error } = await supabase.auth.signInWithOAuth({
+                provider: 'google',
+                options: {
+                    redirectTo: window.location.origin + '/auth/callback'
+                }
+            });
+            if (error) showError(error.message);
+        }
+
+        // LinkedIn OAuth
+        async function signInWithLinkedIn() {
+            const { data, error } = await supabase.auth.signInWithOAuth({
+                provider: 'linkedin',
+                options: {
+                    redirectTo: window.location.origin + '/auth/callback'
+                }
+            });
+            if (error) showError(error.message);
+        }
+
+        // Email/Password Form
+        document.getElementById('authForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                if (mode === 'signin') {
+                    const { data, error } = await supabase.auth.signInWithPassword({
+                        email,
+                        password
+                    });
+
+                    if (error) throw error;
+
+                    // Set cookie and redirect
+                    document.cookie = `access_token=${data.session.access_token}; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Lax`;
+                    showSuccess('Sign in successful! Redirecting...');
+                    setTimeout(() => window.location.href = '/', 1000);
+                } else {
+                    const fullName = document.getElementById('full_name').value;
+                    const { data, error } = await supabase.auth.signUp({
+                        email,
+                        password,
+                        options: {
+                            data: {
+                                full_name: fullName
+                            }
+                        }
+                    });
+
+                    if (error) throw error;
+
+                    if (data.session) {
+                        document.cookie = `access_token=${data.session.access_token}; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Lax`;
+                        showSuccess('Account created! Redirecting...');
+                        setTimeout(() => window.location.href = '/', 1000);
+                    } else {
+                        showSuccess('Please check your email to confirm your account.');
+                    }
+                }
+            } catch (error) {
+                showError(error.message);
+            }
+        });
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error-message');
+            errorDiv.textContent = message;
+            errorDiv.classList.remove('hidden');
+            document.getElementById('success-message').classList.add('hidden');
+        }
+
+        function showSuccess(message) {
+            const successDiv = document.getElementById('success-message');
+            successDiv.textContent = message;
+            successDiv.classList.remove('hidden');
+            document.getElementById('error-message').classList.add('hidden');
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,151 @@
+{{template "header" .}}
+{{template "navbar" .}}
+
+<main class="flex-grow bg-white">
+    <!-- Hero Section with Floating Banner -->
+    <section class="relative py-20 overflow-hidden bg-gray-50">
+        <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
+        </div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="max-w-4xl mx-auto text-center">
+                <span
+                    class="inline-block py-1 px-3 rounded-full bg-blue-100 text-primary text-xs font-bold uppercase tracking-widest mb-6 animate-lift">Our
+                    Mission</span>
+                <h1 class="text-5xl md:text-7xl font-serif-display font-bold text-gray-900 mb-8 leading-tight">
+                    We deliver <span class="text-gradient-primary relative inline-block">truth
+                        <svg class="absolute w-full h-3 -bottom-1 left-0 text-blue-200 -z-10" viewBox="0 0 100 10"
+                            preserveAspectRatio="none">
+                            <path d="M0 5 Q 50 10 100 5" stroke="currentColor" stroke-width="8" fill="none" />
+                        </svg>
+                    </span> in a complex world.
+                </h1>
+                <p class="text-xl text-gray-600 font-serif-body leading-relaxed max-w-2xl mx-auto">
+                    Global Headlines is dedicated to integrity, insight, and the relentless pursuit of facts. We believe
+                    in journalism that empowers.
+                </p>
+            </div>
+        </div>
+
+        <!-- Floating Elements -->
+        <div class="absolute top-1/4 left-10 w-24 h-24 bg-blue-500/10 rounded-full blur-3xl animate-float"></div>
+        <div class="absolute bottom-1/4 right-10 w-32 h-32 bg-gold/10 rounded-full blur-3xl animate-float-delayed">
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="py-24">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div
+                    class="bg-white p-10 rounded-3xl shadow-soft-lg hover-lift border border-gray-100 text-center group">
+                    <div
+                        class="w-16 h-16 mx-auto bg-blue-50 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <i class="ph ph-shield-check text-3xl text-primary"></i>
+                    </div>
+                    <h3 class="text-2xl font-serif-display font-bold mb-4">Integrity First</h3>
+                    <p class="text-gray-600 leading-relaxed">We adhere to the highest standards of journalistic ethics.
+                        Accuracy is our currency.</p>
+                </div>
+
+                <!-- Card 2 -->
+                <div
+                    class="bg-white p-10 rounded-3xl shadow-soft-lg hover-lift border border-gray-100 text-center group relative top-8 md:top-12">
+                    <div
+                        class="w-16 h-16 mx-auto bg-gold/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <i class="ph ph-globe-hemisphere-west text-3xl text-gold"></i>
+                    </div>
+                    <h3 class="text-2xl font-serif-display font-bold mb-4">Global Perspective</h3>
+                    <p class="text-gray-600 leading-relaxed">Our network spans 50+ countries, bringing you local
+                        insights with global context.</p>
+                </div>
+
+                <!-- Card 3 -->
+                <div
+                    class="bg-white p-10 rounded-3xl shadow-soft-lg hover-lift border border-gray-100 text-center group">
+                    <div
+                        class="w-16 h-16 mx-auto bg-red-50 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <i class="ph ph-lightning text-3xl text-secondary"></i>
+                    </div>
+                    <h3 class="text-2xl font-serif-display font-bold mb-4">Real-Time Insight</h3>
+                    <p class="text-gray-600 leading-relaxed">Breaking news delivered instantly, with the depth and
+                        analysis you need to understand it.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="py-24 bg-paper relative overflow-hidden">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-serif-display font-bold mb-4">Meet the Editorial Board</h2>
+                <p class="text-gray-600">The minds behind the headlines.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Member 1 -->
+                <div class="group">
+                    <div class="relative overflow-hidden rounded-2xl mb-6 shadow-soft-md hover-lift-lg">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=500&fit=crop"
+                            alt="Editor" class="w-full h-80 object-cover transition duration-700 group-hover:scale-105">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6">
+                            <div class="text-white translate-y-4 group-hover:translate-y-0 transition duration-300">
+                                <p class="font-bold">Sarah Jenkins</p>
+                                <p class="text-xs opacity-80">Editor-in-Chief</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Member 2 -->
+                <div class="group">
+                    <div class="relative overflow-hidden rounded-2xl mb-6 shadow-soft-md hover-lift-lg">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=500&fit=crop"
+                            alt="Editor" class="w-full h-80 object-cover transition duration-700 group-hover:scale-105">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6">
+                            <div class="text-white translate-y-4 group-hover:translate-y-0 transition duration-300">
+                                <p class="font-bold">David Chen</p>
+                                <p class="text-xs opacity-80">Head of Global Affairs</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Member 3 -->
+                <div class="group">
+                    <div class="relative overflow-hidden rounded-2xl mb-6 shadow-soft-md hover-lift-lg">
+                        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=500&fit=crop"
+                            alt="Editor" class="w-full h-80 object-cover transition duration-700 group-hover:scale-105">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6">
+                            <div class="text-white translate-y-4 group-hover:translate-y-0 transition duration-300">
+                                <p class="font-bold">Elena Rodriguez</p>
+                                <p class="text-xs opacity-80">Senior Tech Correspondent</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Member 4 -->
+                <div class="group">
+                    <div class="relative overflow-hidden rounded-2xl mb-6 shadow-soft-md hover-lift-lg">
+                        <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=500&fit=crop"
+                            alt="Editor" class="w-full h-80 object-cover transition duration-700 group-hover:scale-105">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6">
+                            <div class="text-white translate-y-4 group-hover:translate-y-0 transition duration-300">
+                                <p class="font-bold">Marcus Johnson</p>
+                                <p class="text-xs opacity-80">Business Editor</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+{{template "footer" .}}

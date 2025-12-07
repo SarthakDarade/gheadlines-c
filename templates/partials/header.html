@@ -1,0 +1,105 @@
+{{define "header"}}
+<header class="sticky top-0 z-50 sticky-nav border-b border-gray-200 shadow-sm">
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+            <!-- Logo -->
+            <div class="flex-shrink-0">
+                <a href="/" class="text-2xl font-bold text-news-blue hover:text-news-red transition-colors">
+                    Global Headlines
+                </a>
+            </div>
+            
+            <!-- Desktop Navigation -->
+            <div class="hidden md:flex md:items-center md:space-x-6 flex-1">
+                <div class="ml-10 flex items-baseline space-x-8">
+                    <a href="/" class="text-gray-700 hover:text-news-blue px-3 py-2 text-sm font-medium transition-colors">
+                        Home
+                    </a>
+                    {{if .Categories}}
+                        {{range .Categories}}
+                        <a href="/category/{{.Slug}}" class="text-gray-700 hover:text-news-blue px-3 py-2 text-sm font-medium transition-colors">
+                            {{.Name}}
+                        </a>
+                        {{end}}
+                    {{end}}
+                </div>
+                
+                <!-- Auth Buttons -->
+                <div class="ml-auto flex items-center space-x-4">
+                    {{if .User}}
+                    <div class="flex items-center space-x-3">
+                        {{if .User.AvatarURL}}
+                        <img src="{{.User.AvatarURL}}" alt="{{.User.FullName}}" class="w-8 h-8 rounded-full">
+                        {{end}}
+                        <span class="text-sm font-medium text-gray-700">{{.User.FullName}}</span>
+                        <a href="/auth/signout" class="text-sm text-gray-600 hover:text-gray-900 transition-colors">Sign Out</a>
+                    </div>
+                    {{else}}
+                    <a href="/signin" class="text-sm font-medium text-gray-700 hover:text-news-blue transition-colors">
+                        Sign In
+                    </a>
+                    <a href="/signup" class="px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-semibold rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all shadow-md hover:shadow-lg">
+                        Sign Up
+                    </a>
+                    {{end}}
+                </div>
+            </div>
+            
+            <!-- Mobile menu button -->
+            <div class="md:hidden">
+                <button type="button" class="text-gray-700 hover:text-news-blue focus:outline-none" id="mobile-menu-button">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Navigation -->
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="/" class="text-gray-700 hover:text-news-blue block px-3 py-2 text-base font-medium">
+                    Home
+                </a>
+                {{if .Categories}}
+                    {{range .Categories}}
+                    <a href="/category/{{.Slug}}" class="text-gray-700 hover:text-news-blue block px-3 py-2 text-base font-medium">
+                        {{.Name}}
+                    </a>
+                    {{end}}
+                {{end}}
+                <div class="border-t border-gray-200 mt-2 pt-2">
+                    {{if .User}}
+                    <div class="px-3 py-2">
+                        <div class="text-sm font-medium text-gray-900">{{.User.FullName}}</div>
+                        <a href="/auth/signout" class="text-sm text-gray-600 hover:text-gray-900">Sign Out</a>
+                    </div>
+                    {{else}}
+                    <a href="/signin" class="text-gray-700 hover:text-news-blue block px-3 py-2 text-base font-medium">
+                        Sign In
+                    </a>
+                    <a href="/signup" class="block px-3 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-base font-semibold rounded-lg mt-2">
+                        Sign Up
+                    </a>
+                    {{end}}
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<script>
+    // Minimal JS for mobile menu toggle
+    document.addEventListener('DOMContentLoaded', function() {
+        const button = document.getElementById('mobile-menu-button');
+        const menu = document.getElementById('mobile-menu');
+        if (button && menu) {
+            button.addEventListener('click', function() {
+                menu.classList.toggle('hidden');
+            });
+        }
+    });
+</script>
+{{end}}
+
+

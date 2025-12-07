@@ -1,0 +1,104 @@
+/* Anti-Gravity Design System */
+
+:root {
+    --gravity-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --gravity-ease: cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+/* Glassmorphism Utilities */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.glass-panel-dark {
+    background: rgba(17, 24, 39, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Anti-Gravity Interactions */
+.hover-lift {
+    transition: transform 0.3s var(--gravity-spring), box-shadow 0.3s var(--gravity-ease);
+}
+
+.hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.15);
+}
+
+.hover-lift-lg {
+    transition: transform 0.4s var(--gravity-spring), box-shadow 0.4s var(--gravity-ease);
+}
+
+.hover-lift-lg:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 32px -8px rgba(0, 0, 0, 0.2);
+}
+
+/* Magnetic Button Effect (requires JS for full effect, CSS fallback) */
+.magnetic-btn {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease-out;
+}
+
+.magnetic-btn:active {
+    transform: scale(0.95);
+}
+
+/* Ripple Animation */
+@keyframes ripple {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(0);
+    animation: ripple 0.6s linear;
+    pointer-events: none;
+}
+
+/* Floating Animation Classes */
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+    animation: float 6s ease-in-out 3s infinite;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Text Gradients */
+.text-gradient-gold {
+    background: linear-gradient(135deg, #B49B57 0%, #D4AF37 50%, #B49B57 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.text-gradient-primary {
+    background: linear-gradient(135deg, #003D6B 0%, #005691 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}

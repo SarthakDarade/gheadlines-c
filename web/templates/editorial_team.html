@@ -1,0 +1,64 @@
+{{template "header" .}}
+{{template "navbar" .}}
+
+<main class="flex-grow bg-white">
+    <!-- Hero -->
+    <section class="bg-gray-900 text-white py-20 relative overflow-hidden">
+        <div class="absolute inset-0 bg-black/40 z-0"></div> <!-- Overlay -->
+        <div class="container mx-auto px-4 relative z-10 text-center">
+            <h1 class="text-4xl md:text-6xl font-serif-display font-bold mb-4">Our Editorial Team</h1>
+            <p class="text-xl text-gray-300 max-w-2xl mx-auto font-serif-body">
+                Meet the voices behind the headlines. Committed to truth, integrity, and insight.
+            </p>
+        </div>
+    </section>
+
+    <!-- Team Grid -->
+    <section class="py-16">
+        <div class="container mx-auto px-4 max-w-6xl">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {{range .Team}}
+                <a href="/editorial/{{.Slug}}" class="group">
+                    <div
+                        class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 h-full flex flex-col">
+                        <!-- Avatar -->
+                        <div class="aspect-square w-full overflow-hidden relative">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                            </div>
+                            <img src="{{.AvatarURL}}" alt="{{.Name}}"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                        </div>
+
+                        <!-- Content -->
+                        <div class="p-6 flex-grow flex flex-col justify-between">
+                            <div>
+                                <h3
+                                    class="text-xl font-bold font-serif-display text-gray-900 mb-1 group-hover:text-primary transition-colors">
+                                    {{.Name}}</h3>
+                                <div class="text-xs font-bold uppercase tracking-widest text-primary mb-3">{{.Role}}
+                                </div>
+                                <p class="text-gray-600 line-clamp-3 text-sm leading-relaxed mb-4">{{.Bio}}</p>
+                            </div>
+
+                            <div class="flex items-center gap-3 pt-4 border-t border-gray-100">
+                                <span class="text-xs font-bold text-gray-400 group-hover:text-primary transition">Read
+                                    Profile & Articles</span>
+                                <i
+                                    class="ph ph-arrow-right text-sm text-gray-400 group-hover:text-primary transition"></i>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                {{else}}
+                <div class="col-span-full text-center py-20">
+                    <i class="ph ph-users text-4xl text-gray-300 mb-4"></i>
+                    <p class="text-gray-500">Our team is currently being assembled. Check back soon.</p>
+                </div>
+                {{end}}
+            </div>
+        </div>
+    </section>
+</main>
+
+{{template "footer" .}}

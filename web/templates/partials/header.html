@@ -1,0 +1,198 @@
+{{define "header"}}
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{if .Title}}{{.Title}} - {{end}}{{.SiteName}}</title>
+    <meta name="description"
+        content="{{if .Description}}{{.Description}}{{else}}Global Headlines - Your trusted source for world news, technology, business, and culture.{{end}}">
+    <link rel="icon" type="image/png" href="/static/favicon.png">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="{{.SiteName}}">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:url" content="{{.SiteURL}}{{if .CurrentPath}}{{.CurrentPath}}{{end}}">
+    <meta property="og:title" content="{{if .Title}}{{.Title}}{{else}}{{.SiteName}}{{end}}">
+    <meta property="og:description"
+        content="{{if .Description}}{{.Description}}{{else}}Global Headlines - Your trusted source for world news.{{end}}">
+    <meta property="og:image"
+        content="{{if .ImageURL}}{{.ImageURL}}{{else}}{{.SiteURL}}/static/img/og-image.jpg{{end}}">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{.SiteURL}}{{if .CurrentPath}}{{.CurrentPath}}{{end}}">
+    <meta property="twitter:title" content="{{if .Title}}{{.Title}}{{else}}{{.SiteName}}{{end}}">
+    <meta property="twitter:description"
+        content="{{if .Description}}{{.Description}}{{else}}Global Headlines - Your trusted source for world news.{{end}}">
+    <meta property="twitter:image"
+        content="{{if .ImageURL}}{{.ImageURL}}{{else}}{{.SiteURL}}/static/img/og-image.jpg{{end}}">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap"
+        rel="stylesheet">
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=typography,forms,aspect-ratio,line-clamp"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                        body: ['Merriweather', 'serif'],
+                    },
+                    colors: {
+                        primary: '#003D6B',
+                        secondary: '#9B1B30',
+                        gold: '#B49B57',
+                        dark: '#111827',
+                        light: '#F9FAFB',
+                        paper: '#FDFBF7',
+                    },
+                    container: {
+                        center: true,
+                        padding: '1rem',
+                        screens: {
+                            sm: '640px',
+                            md: '768px',
+                            lg: '1024px',
+                            xl: '1140px',
+                            '2xl': '1140px',
+                        },
+                    },
+                    typography: {
+                        DEFAULT: {
+                            css: {
+                                maxWidth: '65ch',
+                                color: '#374151',
+                                fontFamily: 'Merriweather, serif',
+                                h1: { fontFamily: 'Playfair Display, serif', color: '#111827' },
+                                h2: { fontFamily: 'Playfair Display, serif', color: '#111827' },
+                                h3: { fontFamily: 'Playfair Display, serif', color: '#111827' },
+                                blockquote: { borderLeftColor: '#003D6B', fontStyle: 'italic' },
+                            },
+                        },
+                    },
+                    boxShadow: {
+                        'soft-sm': '0 2px 4px rgba(0,0,0,0.02), 0 1px 2px rgba(0,0,0,0.03)',
+                        'soft-md': '0 4px 8px rgba(0,0,0,0.04), 0 2px 4px rgba(0,0,0,0.03)',
+                        'soft-lg': '0 12px 24px rgba(0,0,0,0.06), 0 4px 8px rgba(0,0,0,0.04)',
+                        'soft-xl': '0 20px 32px rgba(0,0,0,0.08), 0 8px 16px rgba(0,0,0,0.06)',
+                        'soft-2xl': '0 32px 64px rgba(0,0,0,0.12), 0 16px 32px rgba(0,0,0,0.08)',
+                        'glow': '0 0 15px rgba(0, 61, 107, 0.3)',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-delayed': 'float 6s ease-in-out 3s infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'lift': 'lift 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        lift: {
+                            '0%': { transform: 'translateY(0)', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)' },
+                            '100%': { transform: 'translateY(-4px)', boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)' },
+                        }
+                    },
+                    transitionTimingFunction: {
+                        'spring': 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+                        'ease-out-cubic': 'cubic-bezier(0.215, 0.61, 0.355, 1)',
+                    },
+                },
+            },
+        }
+    </script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/antigravity.css">
+    <style>
+        .font-serif-display {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .font-serif-body {
+            font-family: 'Merriweather', serif;
+        }
+
+        .font-sans {
+            font-family: 'Inter', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .hover-underline-animation {
+            display: inline-block;
+            position: relative;
+        }
+
+        .hover-underline-animation::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #003D6B;
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+
+        .hover-underline-animation:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+
+    {{if .JSONLD}}
+    <script type="application/ld+json">
+        {{.JSONLD}}
+    </script>
+    {{end}}
+</head>
+
+<body class="bg-white text-gray-900 antialiased flex flex-col min-h-screen">
+    {{end}}

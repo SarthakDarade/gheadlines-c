@@ -1,0 +1,103 @@
+{{define "navbar"}}
+<header class="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm transition-all duration-300"
+    id="main-header">
+    <!-- Top Bar -->
+    <div class="bg-gray-50 border-b border-gray-100 py-1 hidden md:block">
+        <div
+            class="container mx-auto px-4 flex justify-between items-center text-[11px] uppercase tracking-wider font-sans text-gray-500 font-medium">
+            <div class="flex items-center gap-4">
+                <span>{{.CurrentDate}}</span>
+                <span class="flex items-center gap-1"><i class="ph ph-sun"></i> New Delhi 28°C</span>
+                <span id="market-widget-new" class="flex items-center gap-1 font-bold"></span>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="#" class="hover:text-primary transition">Edition: IN</a>
+                <a href="#" class="hover:text-primary transition">Subscribe</a>
+                <a href="/adm/login" class="hover:text-primary transition">Sign In</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Navbar -->
+    <div class="container mx-auto px-4">
+        <div class="flex justify-between items-center h-16 md:h-20">
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden p-2 text-gray-900"
+                onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                <i class="ph ph-list text-2xl"></i>
+            </button>
+
+            <!-- Logo -->
+            <a href="/" class="flex-shrink-0 group flex flex-col items-center md:items-start">
+                <div class="font-serif-display font-black text-3xl md:text-4xl tracking-tighter leading-none">
+                    <span class="text-black">Global</span><span class="text-primary">Headlines</span>
+                </div>
+                <span class="text-[10px] uppercase tracking-[0.2em] text-gray-400 hidden md:block">Truth • Integrity •
+                    Insight</span>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <nav
+                class="hidden md:flex items-center gap-6 lg:gap-8 font-sans font-bold text-xs uppercase tracking-widest text-gray-800">
+                <a href="/"
+                    class='hover:text-primary transition-colors py-2 border-b-2 border-transparent hover:border-primary {{if eq .ActiveCategory ""}}text-primary border-primary{{end}}'>Home</a>
+                <a href="/category/world"
+                    class='hover:text-primary transition-colors py-2 border-b-2 border-transparent hover:border-primary {{if eq .ActiveCategory "world"}}text-primary border-primary{{end}}'>World</a>
+                <a href="/category/business"
+                    class='hover:text-primary transition-colors py-2 border-b-2 border-transparent hover:border-primary {{if eq .ActiveCategory "business"}}text-primary border-primary{{end}}'>Business</a>
+                <a href="/category/technology"
+                    class='hover:text-primary transition-colors py-2 border-b-2 border-transparent hover:border-primary {{if eq .ActiveCategory "technology"}}text-primary border-primary{{end}}'>Tech</a>
+                <a href="/category/sports"
+                    class='hover:text-primary transition-colors py-2 border-b-2 border-transparent hover:border-primary {{if eq .ActiveCategory "sports"}}text-primary border-primary{{end}}'>Sports</a>
+                <a href="/category/opinion"
+                    class='hover:text-primary transition-colors py-2 border-b-2 border-transparent hover:border-primary {{if eq .ActiveCategory "opinion"}}text-primary border-primary{{end}}'>Opinion</a>
+            </nav>
+
+            <!-- Search & Actions -->
+            <div class="flex items-center gap-4">
+                <button class="p-2 text-gray-500 hover:text-primary transition">
+                    <i class="ph ph-magnifying-glass text-xl"></i>
+                </button>
+                <a href="#"
+                    class="hidden md:inline-block bg-primary text-white px-5 py-2 rounded-sm text-xs font-bold uppercase tracking-wider hover:bg-[#002a4d] transition shadow-sm">Subscribe</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu"
+        class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full left-0 shadow-lg z-50">
+        <nav class="flex flex-col p-4 space-y-4 font-sans font-bold text-sm uppercase tracking-wide text-gray-800">
+            <a href="/" class="block py-2 border-b border-gray-50 hover:text-primary">Home</a>
+            <a href="/category/world" class="block py-2 border-b border-gray-50 hover:text-primary">World</a>
+            <a href="/category/business" class="block py-2 border-b border-gray-50 hover:text-primary">Business</a>
+            <a href="/category/technology" class="block py-2 border-b border-gray-50 hover:text-primary">Technology</a>
+            <a href="/category/sports" class="block py-2 border-b border-gray-50 hover:text-primary">Sports</a>
+            <a href="/category/opinion" class="block py-2 border-b border-gray-50 hover:text-secondary">Opinion</a>
+            <a href="#" class="block py-2 text-primary">Subscribe</a>
+        </nav>
+    </div>
+</header>
+<script>
+    // Market Data Fetch
+    function updateMarketData() {
+        fetch('/api/market-data')
+            .then(function (response) { return response.json(); })
+            .then(function (data) {
+                var el = document.getElementById('market-widget-new');
+                if (el) {
+                    var icon = data.up ? 'ph-trend-up' : 'ph-trend-down';
+                    var color = data.up ? 'text-green-600' : 'text-red-600';
+                    var sign = data.up ? '+' : '';
+                    el.className = 'flex items-center gap-1 font-bold ' + color;
+                    el.innerHTML = '<i class="ph ' + icon + '"></i> ' + data.index + ' ' + sign + data.change.toFixed(2) + ' (' + sign + data.percent.toFixed(2) + '%)';
+                }
+            })
+            .catch(function (err) { console.log('Market fetch failed', err); });
+    }
+
+    // Update every 10 seconds
+    updateMarketData();
+    setInterval(updateMarketData, 10000);
+</script>
+{{end}}

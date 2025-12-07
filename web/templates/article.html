@@ -1,0 +1,202 @@
+{{template "header" .}}
+{{template "navbar" .}}
+
+<main class="flex-grow bg-white">
+    <article class="pb-16">
+
+        <!-- Article Header (Centered) -->
+        <header class="container mx-auto px-4 max-w-4xl text-center py-12 md:py-16">
+            <div
+                class="flex items-center justify-center gap-2 text-xs font-bold tracking-[0.15em] text-primary uppercase mb-6">
+                {{if .Article.CategoryObj}}
+                <a href="/category/{{.Article.CategoryObj.Slug}}" class="hover:underline">{{.Article.Category}}</a>
+                {{else}}
+                <a href="#" class="hover:underline">{{.Article.Category}}</a>
+                {{end}}
+            </div>
+            <h1
+                class="text-4xl md:text-5xl lg:text-6xl font-serif-display font-bold text-gray-900 leading-[1.1] mb-6 tracking-tight">
+                {{.Article.Title}}
+            </h1>
+            <p
+                class="text-xl md:text-2xl text-gray-500 font-serif-body leading-relaxed max-w-2xl mx-auto mb-8 font-light">
+                {{.Article.Excerpt}}
+            </p>
+
+            <div class="flex items-center justify-center gap-6 border-t border-b border-gray-100 py-6 mt-8">
+                <div class="flex items-center gap-3">
+                    <img src="{{.Article.AuthorImage}}" alt="{{.Article.Author}}"
+                        class="w-12 h-12 rounded-full object-cover border border-gray-200">
+                    <div class="text-left">
+                        <div class="font-bold text-gray-900 text-sm font-sans uppercase tracking-wide">By
+                            {{.Article.Author}}</div>
+                        <div class="text-gray-500 text-xs font-sans">{{.Article.Date}} • {{.Article.ReadTime}} read
+                        </div>
+                    </div>
+                </div>
+                <div class="hidden md:flex gap-3 ml-8">
+                    <button data-platform="twitter"
+                        class="share-btn w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-[#1DA1F2] hover:text-white transition"><i
+                            class="ph ph-twitter-logo"></i></button>
+                    <button data-platform="facebook"
+                        class="share-btn w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-[#4267B2] hover:text-white transition"><i
+                            class="ph ph-facebook-logo"></i></button>
+                    <button data-platform="linkedin"
+                        class="share-btn w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-[#0A66C2] hover:text-white transition"><i
+                            class="ph ph-linkedin-logo"></i></button>
+                    <button
+                        class="copy-link-btn  w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-gray-800 hover:text-white transition"><i
+                            class="ph ph-link"></i></button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Full Width Image -->
+        <div class="container mx-auto px-4 max-w-[1200px] mb-16">
+            <figure>
+                <img src="{{.Article.ImageURL}}" alt="{{.Article.Title}}" class="w-full rounded-sm shadow-sm"
+                    fetchpriority="high" loading="eager">
+                <figcaption class="text-left text-xs text-gray-500 mt-3 font-sans border-l-2 border-gray-300 pl-3">
+                    <span class="font-bold text-gray-700">Above:</span> A representative image for the story. (Source:
+                    Unsplash)
+                </figcaption>
+            </figure>
+        </div>
+
+        <!-- Content Layout -->
+        <div class="container mx-auto px-4 max-w-[1140px]">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+
+                <!-- Left Rail (Share - Desktop) -->
+                <div class="hidden lg:block lg:col-span-2">
+                    <div class="sticky top-32 flex flex-col gap-4 items-center">
+                        <span
+                            class="text-[10px] font-bold uppercase tracking-widest text-gray-400 rotate-90 mb-4 origin-center">Share</span>
+                        <button class="action-btn p-2 text-gray-400 hover:text-primary transition"><i
+                                class="ph ph-heart text-2xl"></i></button>
+                        <button class="action-btn p-2 text-gray-400 hover:text-primary transition"><i
+                                class="ph ph-bookmark-simple text-2xl"></i></button>
+                        <div class="w-px h-12 bg-gray-200 my-2"></div>
+                        <button data-platform="twitter"
+                            class="share-btn p-2 text-gray-400 hover:text-[#1DA1F2] transition"><i
+                                class="ph ph-twitter-logo text-xl"></i></button>
+                        <button data-platform="facebook"
+                            class="share-btn p-2 text-gray-400 hover:text-[#4267B2] transition"><i
+                                class="ph ph-facebook-logo text-xl"></i></button>
+                    </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="lg:col-span-7">
+                    <div class="prose prose-lg prose-slate mx-auto font-serif-body prose-headings:font-serif-display
+                prose-headings:font-bold prose-headings:text-gray-900 prose-p:text-gray-700 prose-p:leading-8
+                prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-sm
+                prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:bg-gray-50
+                prose-blockquote:py-2 prose-blockquote:px-6 prose-blockquote:not-italic first-letter:text-6xl
+                first-letter:font-bold first-letter:text-gray-900 first-letter:mr-3 first-letter:float-left
+                first-letter:font-serif-display">
+                        {{.Article.ContentHTML}}
+                    </div>
+
+                    <!-- Tags & Author Bio -->
+                    <div class="mt-16 pt-8 border-t border-gray-200">
+                        <div class="flex flex-wrap gap-2 mb-8">
+                            <span
+                                class="px-3 py-1 bg-gray-100 text-gray-600 text-xs font-bold uppercase tracking-wider rounded-sm hover:bg-gray-200 cursor-pointer transition">News</span>
+                            <span
+                                class="px-3 py-1 bg-gray-100 text-gray-600 text-xs font-bold uppercase tracking-wider rounded-sm hover:bg-gray-200 cursor-pointer transition">{{.Article.Category}}</span>
+                        </div>
+
+                        <div class="bg-gray-50 p-8 rounded-sm flex gap-6 items-start">
+                            <img src="{{.Article.AuthorImage}}" alt="{{.Article.Author}}"
+                                class="w-16 h-16 rounded-full object-cover border-2 border-white shadow-sm">
+                            <div>
+                                <h4 class="font-sans font-bold text-gray-900 uppercase tracking-wide text-sm mb-2">About
+                                    the Author</h4>
+                                <h3 class="font-serif-display font-bold text-xl mb-2">{{.Article.Author}}</h3>
+                                <p class="text-sm text-gray-600 font-sans leading-relaxed">Senior correspondent covering
+                                    {{.Article.Category}} and global affairs. Previously at Reuters and The Guardian.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Rail (Related - Desktop) -->
+                <div class="hidden lg:block lg:col-span-3 space-y-8">
+                    <div class="sticky top-32">
+                        <h3
+                            class="text-xs font-bold uppercase tracking-widest text-gray-900 mb-6 border-b border-gray-200 pb-2">
+                            Read Next</h3>
+                        <div class="space-y-6">
+                            {{range $i, $a := .RelatedArticles}}
+                            {{if lt $i 3}}
+                            <article class="group">
+                                <a href="/article/{{.Slug}}" class="block mb-2 overflow-hidden rounded-sm aspect-[3/2]">
+                                    <img src="{{.ImageURL}}" alt="{{.Title}}"
+                                        class="w-full h-full object-cover transition duration-500 group-hover:scale-105">
+                                </a>
+                                <span
+                                    class="text-[10px] font-bold uppercase tracking-widest text-primary mb-1 block">{{.Category}}</span>
+                                <h4
+                                    class="text-base font-serif-display font-bold text-gray-900 leading-tight group-hover:text-primary transition-colors">
+                                    <a href="/article/{{.Slug}}">{{.Title}}</a>
+                                </h4>
+                            </article>
+                            {{end}}
+                            {{end}}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </article>
+
+    <!-- Mobile Related (Visible only on mobile/tablet) -->
+    <section class="lg:hidden bg-gray-50 py-12 border-t border-gray-200">
+        <div class="container mx-auto px-4">
+            <h3 class="text-xl font-serif-display font-bold text-gray-900 mb-6">More Stories</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {{range $i, $a := .RelatedArticles}}
+                {{if lt $i 4}}
+                <article class="flex gap-4 group">
+                    <div class="w-24 h-24 flex-shrink-0 overflow-hidden rounded-sm">
+                        <img src="{{.ImageURL}}" alt="{{.Title}}" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <span
+                            class="text-[10px] font-bold uppercase tracking-widest text-primary mb-1 block">{{.Category}}</span>
+                        <h4
+                            class="text-base font-serif-display font-bold text-gray-900 leading-tight group-hover:text-primary transition-colors">
+                            <a href="/article/{{.Slug}}">{{.Title}}</a>
+                        </h4>
+                    </div>
+                </article>
+                {{end}}
+                {{end}}
+            </div>
+        </div>
+    </section>
+</main>
+
+{{template "footer" .}}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Like & Bookmark Functionality (Mock for now, needs backend integration)
+        const actionBtns = document.querySelectorAll('.action-btn');
+        actionBtns.forEach(btn => {
+            btn.addEventListener('click', function () {
+                const icon = btn.querySelector('i');
+                if (icon.classList.contains('ph-heart')) {
+                    icon.classList.toggle('ph-heart-fill');
+                    icon.classList.toggle('text-red-500');
+                } else if (icon.classList.contains('ph-bookmark-simple')) {
+                    icon.classList.toggle('ph-bookmark-simple-fill');
+                    icon.classList.toggle('text-primary');
+                }
+            });
+        });
+    });
+</script>

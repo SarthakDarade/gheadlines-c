@@ -1,0 +1,155 @@
+{{define "footer"}}
+<footer class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white mt-auto border-t border-gray-700">
+    <div class="container mx-auto px-4 py-12 md:py-16">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+            <!-- Brand -->
+            <div class="col-span-1">
+                <div class="font-serif-display font-bold text-3xl mb-4">
+                    <span class="text-blue-400">Global</span><span class="text-white">Headlines</span>
+                </div>
+                <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                    Delivering world-class journalism with integrity, depth, and insight. Your trusted source for global
+                    news.
+                </p>
+                <div class="flex gap-3">
+                    <button data-platform="whatsapp"
+                        class="share-btn w-10 h-10 rounded-full bg-gray-800 hover:bg-green-500 flex items-center justify-center transition-all duration-300 hover:scale-110 text-white">
+                        <i class="ph ph-whatsapp-logo text-lg"></i>
+                    </button>
+                    <button data-platform="twitter"
+                        class="share-btn w-10 h-10 rounded-full bg-gray-800 hover:bg-blue-400 flex items-center justify-center transition-all duration-300 hover:scale-110 text-white">
+                        <i class="ph ph-twitter-logo text-lg"></i>
+                    </button>
+                    <button data-platform="facebook"
+                        class="share-btn w-10 h-10 rounded-full bg-gray-800 hover:bg-blue-600 flex items-center justify-center transition-all duration-300 hover:scale-110 text-white">
+                        <i class="ph ph-facebook-logo text-lg"></i>
+                    </button>
+                    <button data-platform="linkedin"
+                        class="share-btn w-10 h-10 rounded-full bg-gray-800 hover:bg-blue-700 flex items-center justify-center transition-all duration-300 hover:scale-110 text-white">
+                        <i class="ph ph-linkedin-logo text-lg"></i>
+                    </button>
+                    <button
+                        class="copy-link-btn w-10 h-10 rounded-full bg-gray-800 hover:bg-gray-600 flex items-center justify-center transition-all duration-300 hover:scale-110 text-white">
+                        <i class="ph ph-link text-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Sections -->
+            <div>
+                <h3
+                    class="font-sans font-bold text-sm uppercase tracking-wider text-gray-400 mb-6 flex items-center gap-2">
+                    <i class="ph ph-newspaper text-blue-400"></i>
+                    Sections
+                </h3>
+                <ul class="space-y-3 text-sm">
+                    <li><a href="/category/world"
+                            class="text-gray-300 hover:text-blue-400 transition flex items-center gap-2 group">
+                            <i class="ph ph-caret-right text-xs opacity-0 group-hover:opacity-100 transition"></i>
+                            World
+                        </a></li>
+                    <li><a href="/category/technology"
+                            class="text-gray-300 hover:text-blue-400 transition flex items-center gap-2 group">
+                            <i class="ph ph-caret-right text-xs opacity-0 group-hover:opacity-100 transition"></i>
+                            Technology
+                        </a></li>
+                    <li><a href="/category/business"
+                            class="text-gray-300 hover:text-blue-400 transition flex items-center gap-2 group">
+                            <i class="ph ph-caret-right text-xs opacity-0 group-hover:opacity-100 transition"></i>
+                            Business
+                        </a></li>
+                    <li><a href="/category/sports"
+                            class="text-gray-300 hover:text-blue-400 transition flex items-center gap-2 group">
+                            <i class="ph ph-caret-right text-xs opacity-0 group-hover:opacity-100 transition"></i>
+                            Sports
+                        </a></li>
+                    <li><a href="/category/culture"
+                            class="text-gray-300 hover:text-blue-400 transition flex items-center gap-2 group">
+                            <i class="ph ph-caret-right text-xs opacity-0 group-hover:opacity-100 transition"></i>
+                            Culture
+                        </a></li>
+                </ul>
+            </div>
+
+            <!-- Company -->
+            <div>
+                <h3
+                    class="font-sans font-bold text-sm uppercase tracking-wider text-gray-400 mb-6 flex items-center gap-2">
+                    <i class="ph ph-buildings text-blue-400"></i>
+                    Company
+                </h3>
+                <ul class="space-y-3 text-sm">
+                    <li><a href="/about"
+                            class="text-gray-300 hover:text-blue-400 transition flex items-center gap-2 group">
+                            <i class="ph ph-caret-right text-xs opacity-0 group-hover:opacity-100 transition"></i>
+                            About Us
+                        </a></li>
+                    <li><a href="/careers"
+                            class="text-gray-300 hover:text-blue-400 transition flex items-center gap-2 group">
+                            <i class="ph ph-caret-right text-xs opacity-0 group-hover:opacity-100 transition"></i>
+                            Careers
+                        </a></li>
+                    <li><a href="/privacy"
+                            class="text-gray-300 hover:text-blue-400 transition flex items-center gap-2 group">
+                            <i class="ph ph-caret-right text-xs opacity-0 group-hover:opacity-100 transition"></i>
+                            Privacy Policy
+                        </a></li>
+                    <li><a href="/terms"
+                            class="text-gray-300 hover:text-blue-400 transition flex items-center gap-2 group">
+                            <i class="ph ph-caret-right text-xs opacity-0 group-hover:opacity-100 transition"></i>
+                            Terms of Service
+                        </a></li>
+                    <li><a href="/contact"
+                            class="text-gray-300 hover:text-blue-400 transition flex items-center gap-2 group">
+                            <i class="ph ph-caret-right text-xs opacity-0 group-hover:opacity-100 transition"></i>
+                            Contact
+                        </a></li>
+                </ul>
+            </div>
+
+            <!-- Newsletter -->
+            <div>
+                <h3
+                    class="font-sans font-bold text-sm uppercase tracking-wider text-gray-400 mb-6 flex items-center gap-2">
+                    <i class="ph ph-envelope-simple text-blue-400"></i>
+                    Newsletter
+                </h3>
+                <p class="text-gray-400 text-sm mb-4">Stay informed with our daily newsletter.</p>
+                <form class="space-y-3" id="newsletter-form">
+                    <div class="relative">
+                        <input type="email" name="email" placeholder="your@email.com" required
+                            class="w-full bg-gray-800 border border-gray-700 text-white rounded-sm px-4 py-3 pr-12 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-sm transition shadow-inner placeholder-gray-500">
+                        <button type="submit"
+                            class="absolute right-1 top-1 bottom-1 px-4 bg-primary hover:bg-white hover:text-primary border border-transparent hover:border-primary rounded-sm transition flex items-center justify-center font-bold uppercase tracking-wider text-xs">
+                            <i class="ph ph-paper-plane-tilt"></i>
+                        </button>
+                    </div>
+                </form>
+                <p class="text-xs text-gray-500 mt-3" id="newsletter-message">
+                    <i class="ph ph-shield-check"></i> We respect your privacy
+                </p>
+            </div>
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="border-t border-gray-800 mt-12 pt-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-sm">
+                <p class="text-gray-400">
+                    © {{.CurrentYear}} Global Headlines. All rights reserved.
+                </p>
+                <div class="flex items-center gap-6 text-gray-500">
+                    <a href="/sitemap.xml" class="hover:text-gray-300 transition text-xs">Sitemap</a>
+                    <a href="/rss" class="hover:text-gray-300 transition text-xs">RSS Feed</a>
+                    <span class="text-gray-700">|</span>
+                    <p class="text-xs">
+                        Crafted with <span class="text-red-500 animate-pulse">♥</span> for journalism
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<script src="/static/js/main.js"></script>
+
+</html>
+{{end}}

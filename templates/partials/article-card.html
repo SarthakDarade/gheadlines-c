@@ -1,0 +1,54 @@
+{{define "article-card"}}
+<article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-100">
+    <a href="/article/{{.Slug}}" class="block group">
+        {{if .ImageURL}}
+        <div class="relative h-48 overflow-hidden bg-gray-200">
+            <img 
+                src="{{.ImageURL}}" 
+                alt="{{.Title}}"
+                loading="lazy"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            >
+            {{if .CategoryObj}}
+            <span class="absolute top-3 left-3 px-3 py-1 text-xs font-semibold text-white rounded-full shadow-lg" style="background-color: {{.CategoryObj.Color}};">
+                {{.CategoryObj.Name}}
+            </span>
+            {{end}}
+        </div>
+        {{end}}
+        
+        <div class="p-6">
+            <h2 class="text-xl font-bold text-news-gray mb-3 line-clamp-2 group-hover:text-news-blue transition-colors font-serif">
+                {{.Title}}
+            </h2>
+            
+            <p class="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
+                {{.Excerpt}}
+            </p>
+            
+            <div class="flex items-center justify-between text-xs text-gray-500 pt-2 border-t border-gray-100">
+                <div class="flex items-center space-x-3">
+                    {{if .Author}}
+                    <span class="font-medium text-gray-700">{{.Author}}</span>
+                    {{end}}
+                    <time datetime="{{.CreatedAt.Format "2006-01-02T15:04:05Z07:00"}}" class="text-gray-500">
+                        {{.CreatedAt.Format "Jan 2, 2006"}}
+                    </time>
+                    {{if .ReadTime}}
+                    <span class="text-gray-400">• {{.ReadTime}}</span>
+                    {{end}}
+                </div>
+                <div class="flex items-center space-x-2">
+                    {{if .Views}}
+                    <span class="text-gray-400">{{.Views}} views</span>
+                    {{end}}
+                    {{if .Likes}}
+                    <span class="text-gray-400">• {{.Likes}} likes</span>
+                    {{end}}
+                </div>
+            </div>
+        </div>
+    </a>
+</article>
+{{end}}
+

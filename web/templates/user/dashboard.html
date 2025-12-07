@@ -1,0 +1,198 @@
+{{template "header" .}}
+{{template "navbar" .}}
+
+<main class="flex-grow bg-gray-50">
+    <!-- Dashboard Header -->
+    <section class="bg-white border-b border-gray-100 py-8">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto">
+                <h1 class="text-3xl font-serif-display font-bold text-gray-900 mb-2">Dashboard</h1>
+                <p class="text-gray-500">Welcome back, {{if .Profile.FullName}}{{.Profile.FullName}}{{else}}User{{end}}
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tabs -->
+    <section class="bg-white border-b border-gray-200 sticky top-0 z-40">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto">
+                <nav class="flex gap-8 overflow-x-auto">
+                    <button
+                        class="tab-btn active py-4 px-2 font-bold text-sm uppercase tracking-wider border-b-2 border-primary text-primary transition"
+                        data-tab="overview">
+                        Overview
+                    </button>
+                    <button
+                        class="tab-btn py-4 px-2 font-bold text-sm uppercase tracking-wider border-b-2 border-transparent text-gray-500 hover:text-gray-900 transition"
+                        data-tab="bookmarks">
+                        Bookmarks
+                    </button>
+                    <button
+                        class="tab-btn py-4 px-2 font-bold text-sm uppercase tracking-wider border-b-2 border-transparent text-gray-500 hover:text-gray-900 transition"
+                        data-tab="history">
+                        History
+                    </button>
+                    <button
+                        class="tab-btn py-4 px-2 font-bold text-sm uppercase tracking-wider border-b-2 border-transparent text-gray-500 hover:text-gray-900 transition"
+                        data-tab="comments">
+                        Comments
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tab Content -->
+    <div class="container mx-auto px-4 py-12">
+        <div class="max-w-6xl mx-auto">
+
+            <!-- Overview Tab -->
+            <div id="overview-tab" class="tab-content">
+                <!-- Stats Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+                    <div class="bg-white rounded-2xl shadow-soft-md p-6 hover-lift">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm text-gray-500">Articles Read</span>
+                            <i class="ph ph-newspaper text-primary text-xl"></i>
+                        </div>
+                        <div class="text-3xl font-bold text-gray-900">{{.Stats.ArticlesRead}}</div>
+                        <div class="text-xs text-green-600 mt-1">+12% this week</div>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow-soft-md p-6 hover-lift">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm text-gray-500">Bookmarks</span>
+                            <i class="ph ph-bookmark-simple text-secondary text-xl"></i>
+                        </div>
+                        <div class="text-3xl font-bold text-gray-900">{{.Stats.Bookmarks}}</div>
+                        <div class="text-xs text-gray-400 mt-1">Saved articles</div>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow-soft-md p-6 hover-lift">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm text-gray-500">Comments</span>
+                            <i class="ph ph-chat-circle text-gold text-xl"></i>
+                        </div>
+                        <div class="text-3xl font-bold text-gray-900">{{.Stats.Comments}}</div>
+                        <div class="text-xs text-gray-400 mt-1">Discussions</div>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow-soft-md p-6 hover-lift">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm text-gray-500">Reading Time</span>
+                            <i class="ph ph-clock text-blue-600 text-xl"></i>
+                        </div>
+                        <div class="text-3xl font-bold text-gray-900">24h</div>
+                        <div class="text-xs text-gray-400 mt-1">This month</div>
+                    </div>
+                </div>
+
+                <!-- Recent Articles -->
+                <div class="mb-12">
+                    <h2 class="text-2xl font-serif-display font-bold mb-6">Continue Reading</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="bg-white rounded-2xl shadow-soft-md overflow-hidden hover-lift group">
+                            <div class="h-48 bg-gray-200 overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=600&h=400&fit=crop"
+                                    alt="Article"
+                                    class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            </div>
+                            <div class="p-6">
+                                <span class="text-xs text-primary font-bold uppercase">Technology</span>
+                                <h3 class="font-serif-display font-bold text-lg mt-2 mb-2">AI Revolution in 2025</h3>
+                                <p class="text-sm text-gray-600 mb-4">Progress: 60%</p>
+                                <div class="w-full bg-gray-100 rounded-full h-2">
+                                    <div class="bg-primary h-2 rounded-full" style="width: 60%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Add more cards as needed -->
+                    </div>
+                </div>
+
+                <!-- Recommended -->
+                <div>
+                    <h2 class="text-2xl font-serif-display font-bold mb-6">Recommended for You</h2>
+                    <div class="bg-white rounded-3xl shadow-soft-lg p-8">
+                        <p class="text-gray-500 text-center py-8">Personalized recommendations coming soon...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bookmarks Tab -->
+            <div id="bookmarks-tab" class="tab-content hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-2xl shadow-soft-md p-6 hover-lift">
+                        <div class="flex items-start gap-4">
+                            <div class="w-24 h-24 bg-gray-200 rounded-xl flex-shrink-0"></div>
+                            <div class="flex-1">
+                                <span class="text-xs text-primary font-bold uppercase">World</span>
+                                <h3 class="font-serif-display font-bold text-lg mt-1 mb-2">Global Climate Summit 2025
+                                </h3>
+                                <p class="text-sm text-gray-600 mb-3">Saved 2 days ago</p>
+                                <button class="text-sm text-red-600 hover:text-red-700 font-bold">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- More bookmarks -->
+                </div>
+            </div>
+
+            <!-- History Tab -->
+            <div id="history-tab" class="tab-content hidden">
+                <div class="space-y-4">
+                    <div class="bg-white rounded-2xl shadow-soft-md p-6 hover-lift flex items-center gap-4">
+                        <div class="text-sm text-gray-400">2h ago</div>
+                        <div class="flex-1">
+                            <h3 class="font-bold">Breaking: Major Tech Announcement</h3>
+                            <p class="text-sm text-gray-600">Technology • 5 min read</p>
+                        </div>
+                    </div>
+                    <!-- More history items -->
+                </div>
+            </div>
+
+            <!-- Comments Tab -->
+            <div id="comments-tab" class="tab-content hidden">
+                <div class="space-y-6">
+                    <div class="bg-white rounded-2xl shadow-soft-md p-6 hover-lift">
+                        <div class="flex items-start gap-4 mb-4">
+                            <div class="w-10 h-10 bg-gray-200 rounded-full"></div>
+                            <div class="flex-1">
+                                <div class="font-bold">Your comment on "AI Revolution"</div>
+                                <div class="text-sm text-gray-500">3 hours ago</div>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 bg-gray-50 p-4 rounded-xl">This is a fascinating development in AI
+                            technology...</p>
+                    </div>
+                    <!-- More comments -->
+                </div>
+            </div>
+
+        </div>
+    </div>
+</main>
+
+<script>
+    // Tab switching
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const tabName = btn.dataset.tab;
+
+            // Update buttons
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('active', 'border-primary', 'text-primary');
+                b.classList.add('border-transparent', 'text-gray-500');
+            });
+            btn.classList.add('active', 'border-primary', 'text-primary');
+            btn.classList.remove('border-transparent', 'text-gray-500');
+
+            // Update content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            document.getElementById(tabName + '-tab').classList.remove('hidden');
+        });
+    });
+</script>
+
+{{template "footer" .}}

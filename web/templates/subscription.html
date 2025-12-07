@@ -1,0 +1,528 @@
+{{template "header" .}}
+{{template "navbar" .}}
+
+<main class="flex-grow bg-white">
+    <!-- Hero Section -->
+    <section class="relative py-24 overflow-hidden bg-gradient-to-br from-primary via-blue-800 to-blue-900">
+        <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
+        </div>
+
+        <!-- Floating Elements -->
+        <div class="absolute top-20 left-10 w-64 h-64 bg-white/5 rounded-full blur-3xl animate-float"></div>
+        <div class="absolute bottom-20 right-10 w-80 h-80 bg-gold/10 rounded-full blur-3xl animate-float-delayed"></div>
+
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="max-w-4xl mx-auto text-center text-white">
+                <span
+                    class="inline-block py-2 px-4 rounded-full bg-white/10 backdrop-blur-sm text-white text-sm font-bold uppercase tracking-widest mb-6 animate-lift">
+                    Premium Access
+                </span>
+                <h1 class="text-5xl md:text-7xl font-serif-display font-bold mb-8 leading-tight">
+                    Unlock the Full <span class="text-gradient-gold">Experience</span>
+                </h1>
+                <p class="text-xl text-blue-100 leading-relaxed max-w-2xl mx-auto mb-8">
+                    Get unlimited access to premium content, ad-free reading, and exclusive insights from our expert
+                    journalists.
+                </p>
+                <div class="flex flex-wrap gap-4 justify-center">
+                    <a href="#pricing"
+                        class="px-8 py-4 bg-white text-primary rounded-full font-bold shadow-2xl hover:-translate-y-1 transition-all duration-300 magnetic-btn">
+                        View Plans
+                    </a>
+                    <a href="#features"
+                        class="px-8 py-4 bg-white/10 backdrop-blur-sm text-white rounded-full font-bold border-2 border-white/30 hover:bg-white/20 transition">
+                        Learn More
+                    </a>
+                </div>
+            </div>
+            <!-- Pricing Toggle -->
+            <div class="flex justify-center mb-16" id="pricing">
+                <div
+                    class="bg-white/20 backdrop-blur-md p-1.5 rounded-full inline-flex border border-white/30 shadow-2xl">
+                    <button id="indiaBtn"
+                        class="px-8 py-3 rounded-full font-bold text-sm transition-all duration-300 bg-white text-primary shadow-lg">India</button>
+                    <button id="globalBtn"
+                        class="px-8 py-3 rounded-full font-bold text-sm transition-all duration-300 text-blue-200 hover:text-white">Outside
+                        India</button>
+                </div>
+            </div>
+
+            <!-- Pricing Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto items-start">
+                <!-- Monthly Plan -->
+                <div
+                    class="bg-white rounded-3xl shadow-soft-lg p-8 hover-lift-lg border-2 border-transparent hover:border-primary/20 transition-all duration-300 flex flex-col h-full">
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl font-serif-display font-bold mb-2 text-gray-900">Monthly</h3>
+                        <div class="flex items-baseline justify-center gap-1 mb-4">
+                            <span class="price-amount text-5xl font-bold text-gray-900 tracking-tight" data-inr="₹199"
+                                data-usd="$9">₹199</span>
+                            <span class="text-gray-500 font-medium">/month</span>
+                        </div>
+                        <p class="text-sm text-gray-500 font-medium bg-gray-100 rounded-full py-1 px-3 inline-block">
+                            Flexible, cancel anytime</p>
+                    </div>
+
+                    <ul class="space-y-4 mb-8 flex-grow">
+                        <li class="flex items-start gap-3">
+                            <i class="ph-fill ph-check-circle text-primary text-xl flex-shrink-0 mt-0.5"></i>
+                            <span class="text-gray-700">Unlimited article access</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="ph-fill ph-check-circle text-primary text-xl flex-shrink-0 mt-0.5"></i>
+                            <span class="text-gray-700">Ad-free reading experience</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="ph-fill ph-check-circle text-primary text-xl flex-shrink-0 mt-0.5"></i>
+                            <span class="text-gray-700">Mobile app access</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="ph-fill ph-check-circle text-primary text-xl flex-shrink-0 mt-0.5"></i>
+                            <span class="text-gray-700">Daily newsletter</span>
+                        </li>
+                    </ul>
+
+                    <button
+                        class="w-full py-4 bg-gray-100 text-gray-900 rounded-2xl font-bold hover:bg-gray-200 transition-colors duration-300">
+                        Get Started
+                    </button>
+                </div>
+
+                <!-- Yearly Plan (Popular) -->
+                <div
+                    class="bg-primary rounded-3xl shadow-soft-2xl p-8 hover-lift-lg relative md:-mt-8 border-2 border-primary flex flex-col h-full z-10 ring-4 ring-white/20">
+                    <div
+                        class="absolute -top-5 left-1/2 -translate-x-1/2 px-6 py-2 bg-gradient-to-r from-gold to-yellow-500 text-white rounded-full font-bold text-sm shadow-xl uppercase tracking-wider">
+                        Most Popular
+                    </div>
+
+                    <div class="text-center mb-8 text-white">
+                        <h3 class="text-2xl font-serif-display font-bold mb-2">Yearly</h3>
+                        <div class="flex items-baseline justify-center gap-1 mb-2">
+                            <span class="price-amount text-6xl font-bold tracking-tight" data-inr="₹1,499"
+                                data-usd="$89">₹1,499</span>
+                            <span class="text-blue-200 font-medium">/year</span>
+                        </div>
+                        <p
+                            class="text-sm text-blue-200 font-medium bg-white/10 rounded-full py-1 px-3 inline-block border border-white/20">
+                            Save 37% instantly</p>
+                    </div>
+
+                    <ul class="space-y-4 mb-8 text-white flex-grow">
+                        <li class="flex items-start gap-3">
+                            <i class="ph-fill ph-check-circle text-gold text-xl flex-shrink-0 mt-0.5"></i>
+                            <span>Everything in Monthly</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="ph-fill ph-check-circle text-gold text-xl flex-shrink-0 mt-0.5"></i>
+                            <span>Exclusive deep-dive reports</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="ph-fill ph-check-circle text-gold text-xl flex-shrink-0 mt-0.5"></i>
+                            <span>Early access to new features</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="ph-fill ph-check-circle text-gold text-xl flex-shrink-0 mt-0.5"></i>
+                            <span>Priority support</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="ph-fill ph-check-circle text-gold text-xl flex-shrink-0 mt-0.5"></i>
+                            <span>Offline reading mode</span>
+                        </li>
+                    </ul>
+
+                    <button
+                        class="w-full py-4 bg-white text-primary rounded-2xl font-bold shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                        Subscribe Now
+                    </button>
+                </div>
+
+                <!-- Lifetime Plan -->
+                <div
+                    class="bg-white rounded-3xl shadow-soft-lg p-8 hover-lift-lg border-2 border-transparent hover:border-gold/30 transition-all duration-300 flex flex-col h-full">
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl font-serif-display font-bold mb-2 text-gray-900">Lifetime</h3>
+                        <div class="flex items-baseline justify-center gap-1 mb-4">
+                            <span class="price-amount text-5xl font-bold text-gray-900 tracking-tight" data-inr="₹9,999"
+                                data-usd="$299">₹9,999</span>
+                        </div>
+                        <p class="text-sm text-gray-500 font-medium bg-gray-100 rounded-full py-1 px-3 inline-block">
+                            One-time payment</p>
+                    </div>
+
+                    <ul class="space-y-4 mb-8 flex-grow">
+                        <li class="flex items-start gap-3">
+                            <i class="ph-fill ph-check-circle text-gold text-xl flex-shrink-0 mt-0.5"></i>
+                            <span class="text-gray-700">Everything in Yearly</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="ph-fill ph-check-circle text-gold text-xl flex-shrink-0 mt-0.5"></i>
+                            <span class="text-gray-700">Lifetime access</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="ph-fill ph-check-circle text-gold text-xl flex-shrink-0 mt-0.5"></i>
+                            <span class="text-gray-700">VIP community access</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="ph-fill ph-check-circle text-gold text-xl flex-shrink-0 mt-0.5"></i>
+                            <span class="text-gray-700">Annual summit invite</span>
+                        </li>
+                    </ul>
+
+                    <button
+                        class="w-full py-4 bg-gradient-to-r from-gold to-yellow-600 text-white rounded-2xl font-bold shadow-lg hover:shadow-gold/40 hover:-translate-y-1 transition-all duration-300">
+                        Get Lifetime Access
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Money-back Guarantee -->
+        <div class="max-w-2xl mx-auto mt-12 text-center">
+            <div class="inline-flex items-center gap-3 px-6 py-3 bg-green-50 border border-green-200 rounded-full">
+                <i class="ph-fill ph-shield-check text-green-600 text-2xl"></i>
+                <span class="text-sm font-bold text-green-900">30-day money-back guarantee</span>
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-24 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-serif-display font-bold mb-4">What Our Readers Say</h2>
+                <p class="text-gray-600">Join thousands of satisfied premium subscribers</p>
+            </div>
+
+            <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-gray-50 rounded-3xl p-8 hover-lift">
+                    <div class="flex items-center gap-1 mb-4 text-gold">
+                        <i class="ph-fill ph-star text-xl"></i>
+                        <i class="ph-fill ph-star text-xl"></i>
+                        <i class="ph-fill ph-star text-xl"></i>
+                        <i class="ph-fill ph-star text-xl"></i>
+                        <i class="ph-fill ph-star text-xl"></i>
+                    </div>
+                    <p class="text-gray-700 mb-6 leading-relaxed">
+                        "The depth of analysis and ad-free experience make this subscription absolutely worth it. Best
+                        news platform I've used."
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-gray-200 rounded-full"></div>
+                        <div>
+                            <div class="font-bold text-sm">Sarah Johnson</div>
+                            <div class="text-xs text-gray-500">Business Analyst</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="bg-gray-50 rounded-3xl p-8 hover-lift">
+                    <div class="flex items-center gap-1 mb-4 text-gold">
+                        <i class="ph-fill ph-star text-xl"></i>
+                        <i class="ph-fill ph-star text-xl"></i>
+                        <i class="ph-fill ph-star text-xl"></i>
+                        <i class="ph-fill ph-star text-xl"></i>
+                        <i class="ph-fill ph-star text-xl"></i>
+                    </div>
+                    <p class="text-gray-700 mb-6 leading-relaxed">
+                        "I love the exclusive reports and early access to new features. The yearly plan is a steal!"
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-gray-200 rounded-full"></div>
+                        <div>
+                            <div class="font-bold text-sm">Michael Chen</div>
+                            <div class="text-xs text-gray-500">Tech Entrepreneur</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="bg-gray-50 rounded-3xl p-8 hover-lift">
+                    <div class="flex items-center gap-1 mb-4 text-gold">
+                        <i class="ph-fill ph-star text-xl"></i>
+                        <i class="ph-fill ph-star text-xl"></i>
+                        <i class="ph-fill ph-star text-xl"></i>
+                        <i class="ph-fill ph-star text-xl"></i>
+                        <i class="ph-fill ph-star text-xl"></i>
+                    </div>
+                    <p class="text-gray-700 mb-6 leading-relaxed">
+                        "Outstanding journalism without distractions. The mobile app is fantastic for reading on the
+                        go."
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-gray-200 rounded-full"></div>
+                        <div>
+                            <div class="font-bold text-sm">Emma Rodriguez</div>
+                            <div class="text-xs text-gray-500">Marketing Director</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="py-24 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto">
+                <h2 class="text-4xl font-serif-display font-bold mb-12 text-center">Frequently Asked Questions</h2>
+
+                <div class="space-y-4">
+                    <!-- FAQ Item -->
+                    <div class="bg-white rounded-2xl shadow-soft-md overflow-hidden">
+                        <button
+                            class="faq-btn w-full text-left px-6 py-5 font-bold flex items-center justify-between hover:bg-gray-50 transition">
+                            <span>Can I cancel my subscription anytime?</span>
+                            <i class="ph ph-caret-down text-xl transition-transform"></i>
+                        </button>
+                        <div class="faq-content hidden px-6 pb-5 text-gray-600">
+                            Yes, you can cancel your subscription at any time. You'll continue to have access until the
+                            end of your billing period.
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item -->
+                    <div class="bg-white rounded-2xl shadow-soft-md overflow-hidden">
+                        <button
+                            class="faq-btn w-full text-left px-6 py-5 font-bold flex items-center justify-between hover:bg-gray-50 transition">
+                            <span>What payment methods do you accept?</span>
+                            <i class="ph ph-caret-down text-xl transition-transform"></i>
+                        </button>
+                        <div class="faq-content hidden px-6 pb-5 text-gray-600">
+                            We accept all major credit cards, PayPal, and Apple Pay for your convenience.
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item -->
+                    <div class="bg-white rounded-2xl shadow-soft-md overflow-hidden">
+                        <button
+                            class="faq-btn w-full text-left px-6 py-5 font-bold flex items-center justify-between hover:bg-gray-50 transition">
+                            <span>Is there a free trial available?</span>
+                            <i class="ph ph-caret-down text-xl transition-transform"></i>
+                        </button>
+                        <div class="faq-content hidden px-6 pb-5 text-gray-600">
+                            Yes! We offer a 7-day free trial for all new subscribers. No credit card required.
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-24 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-serif-display font-bold mb-4">What Our Readers Say</h2>
+                <p class="text-gray-600">Join thousands of satisfied premium subscribers</p>
+            </div>
+
+            <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-gray-50 rounded-3xl p-8 hover-lift">
+                    <div class="flex items-center gap-1 mb-4 text-gold">
+                        <i class="ph-fill ph-star text-xl"></i>
+                        <i class="ph-fill ph-star text-xl"></i>
+                        <i class="ph-fill ph-star text-xl"></i>
+                        <i class="ph-fill ph-star text-xl"></i>
+                        <i class="ph-fill ph-star text-xl"></i>
+                    </div>
+                    <p class="text-gray-700 mb-6 leading-relaxed">
+                        "The depth of analysis and ad-free experience make this subscription absolutely worth it. Best
+                        news platform I've used."
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-gray-200 rounded-full"></div>
+                        <div>
+                            <div class="font-bold text-sm">Sarah Johnson</div>
+                            <div class="text-xs text-gray-500">Business Analyst</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="bg-gray-50 rounded-3xl p-8 hover-lift">
+                    <div class="flex items-center gap-1 mb-4 text-gold">
+                        <i class="ph-fill ph-star text-xl"></i>
+                        <i class="ph-fill ph-star text-xl"></i>
+                        <i class="ph-fill ph-star text-xl"></i>
+                        <i class="ph-fill ph-star text-xl"></i>
+                        <i class="ph-fill ph-star text-xl"></i>
+                    </div>
+                    <p class="text-gray-700 mb-6 leading-relaxed">
+                        "I love the exclusive reports and early access to new features. The yearly plan is a steal!"
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-gray-200 rounded-full"></div>
+                        <div>
+                            <div class="font-bold text-sm">Michael Chen</div>
+                            <div class="text-xs text-gray-500">Tech Entrepreneur</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="bg-gray-50 rounded-3xl p-8 hover-lift">
+                    <div class="flex items-center gap-1 mb-4 text-gold">
+                        <i class="ph-fill ph-star text-xl"></i>
+                        <i class="ph-fill ph-star text-xl"></i>
+                        <i class="ph-fill ph-star text-xl"></i>
+                        <i class="ph-fill ph-star text-xl"></i>
+                        <i class="ph-fill ph-star text-xl"></i>
+                    </div>
+                    <p class="text-gray-700 mb-6 leading-relaxed">
+                        "Outstanding journalism without distractions. The mobile app is fantastic for reading on the
+                        go."
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-gray-200 rounded-full"></div>
+                        <div>
+                            <div class="font-bold text-sm">Emma Rodriguez</div>
+                            <div class="text-xs text-gray-500">Marketing Director</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="py-24 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto">
+                <h2 class="text-4xl font-serif-display font-bold mb-12 text-center">Frequently Asked Questions</h2>
+
+                <div class="space-y-4">
+                    <!-- FAQ Item -->
+                    <div class="bg-white rounded-2xl shadow-soft-md overflow-hidden">
+                        <button
+                            class="faq-btn w-full text-left px-6 py-5 font-bold flex items-center justify-between hover:bg-gray-50 transition">
+                            <span>Can I cancel my subscription anytime?</span>
+                            <i class="ph ph-caret-down text-xl transition-transform"></i>
+                        </button>
+                        <div class="faq-content hidden px-6 pb-5 text-gray-600">
+                            Yes, you can cancel your subscription at any time. You'll continue to have access until the
+                            end of your billing period.
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item -->
+                    <div class="bg-white rounded-2xl shadow-soft-md overflow-hidden">
+                        <button
+                            class="faq-btn w-full text-left px-6 py-5 font-bold flex items-center justify-between hover:bg-gray-50 transition">
+                            <span>What payment methods do you accept?</span>
+                            <i class="ph ph-caret-down text-xl transition-transform"></i>
+                        </button>
+                        <div class="faq-content hidden px-6 pb-5 text-gray-600">
+                            We accept all major credit cards, PayPal, and Apple Pay for your convenience.
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item -->
+                    <div class="bg-white rounded-2xl shadow-soft-md overflow-hidden">
+                        <button
+                            class="faq-btn w-full text-left px-6 py-5 font-bold flex items-center justify-between hover:bg-gray-50 transition">
+                            <span>Is there a free trial available?</span>
+                            <i class="ph ph-caret-down text-xl transition-transform"></i>
+                        </button>
+                        <div class="faq-content hidden px-6 pb-5 text-gray-600">
+                            Yes! We offer a 7-day free trial for all new subscribers. No credit card required.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Warning Modal -->
+    <div id="warning-modal" class="fixed inset-0 z-[100] hidden">
+        <!-- Backdrop with blur -->
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div>
+
+        <!-- Modal Content -->
+        <div
+            class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white rounded-2xl shadow-2xl p-8 text-center animate-bounce-in">
+            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="ph-fill ph-warning text-3xl text-red-600"></i>
+            </div>
+
+            <h3 class="text-2xl font-serif-display font-bold text-gray-900 mb-4">Important Notice</h3>
+            <p class="text-gray-600 mb-8 leading-relaxed">
+                We are not currently boarding new Users to use premium services.
+            </p>
+
+            <button onclick="closeModal()"
+                class="w-full py-3 bg-primary text-white font-bold rounded-full hover:bg-primary-dark transition shadow-lg hover:shadow-primary/30">
+                I Understand
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function closeModal() {
+            window.location.href = "/";
+        }
+
+        // Show modal on load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('warning-modal').classList.remove('hidden');
+            }, 1000);
+        });
+    </script>
+</main>
+
+<script>
+    // FAQ Accordion
+    document.querySelectorAll('.faq-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const content = btn.nextElementSibling;
+            const icon = btn.querySelector('i');
+
+            content.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+        });
+    });
+
+    // Region Toggle Logic
+    const indiaBtn = document.getElementById('indiaBtn');
+    const globalBtn = document.getElementById('globalBtn');
+    const priceAmounts = document.querySelectorAll('.price-amount');
+
+    function setRegion(region) {
+        if (region === 'india') {
+            indiaBtn.classList.add('bg-white', 'text-primary', 'shadow-lg');
+            indiaBtn.classList.remove('text-blue-200', 'hover:text-white');
+            globalBtn.classList.remove('bg-white', 'text-primary', 'shadow-lg');
+            globalBtn.classList.add('text-blue-200', 'hover:text-white');
+
+            priceAmounts.forEach(el => {
+                el.textContent = el.dataset.inr;
+            });
+        } else {
+            globalBtn.classList.add('bg-white', 'text-primary', 'shadow-lg');
+            globalBtn.classList.remove('text-blue-200', 'hover:text-white');
+            indiaBtn.classList.remove('bg-white', 'text-primary', 'shadow-lg');
+            indiaBtn.classList.add('text-blue-200', 'hover:text-white');
+
+            priceAmounts.forEach(el => {
+                el.textContent = el.dataset.usd;
+            });
+        }
+    }
+
+    if (indiaBtn && globalBtn) {
+        indiaBtn.addEventListener('click', () => setRegion('india'));
+        globalBtn.addEventListener('click', () => setRegion('global'));
+
+        // Initialize with India (default)
+        setRegion('india');
+    }
+</script>
+
+{{template "footer" .}}
