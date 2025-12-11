@@ -156,7 +156,7 @@ func NewsSitemapHandler(dbClient *db.Client, siteURL string, siteName string) ht
 			pubDate := article.CreatedAt
 			if !pubDate.IsZero() {
 				sitemap.URLs = append(sitemap.URLs, NewsURL{
-					Loc: fmt.Sprintf("%s/article/%s", siteURL, article.Slug),
+					Loc: fmt.Sprintf("%s/article/%s", siteURL, article.ID),
 					News: NewsMeta{
 						Publication: NewsPublication{
 							Name:     siteName,

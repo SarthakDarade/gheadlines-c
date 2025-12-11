@@ -79,7 +79,8 @@
                 if (data.session) {
                     // Set the access token as a cookie
                     const maxAge = 7 * 24 * 60 * 60; // 7 days in seconds
-                    document.cookie = `access_token=${data.session.access_token}; path=/; max-age=${maxAge}; SameSite=Lax`;
+                    const isSecure = window.location.protocol === 'https:';
+                    document.cookie = `access_token=${data.session.access_token}; path=/; max-age=${maxAge}; SameSite=Lax${isSecure ? '; Secure' : ''}`;
 
                     // Redirect to home page
                     window.location.href = '/';

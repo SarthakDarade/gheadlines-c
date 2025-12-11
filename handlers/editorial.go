@@ -76,9 +76,8 @@ func EditorialProfileHandler(dbClient *db.Client, cfg *config.Config) http.Handl
 			return
 		}
 
-		// Fetch recent articles by this editor (mocked or filtered by author name)
-		// For now, simple search by author name
-		articles, _ := dbClient.SearchArticles(r.Context(), member.Name)
+		// Fetch recent articles by this editor using author name
+		articles, _ := dbClient.GetArticlesByAuthor(r.Context(), member.Name)
 
 		user, _ := GetCurrentUser(r, dbClient, cfg)
 

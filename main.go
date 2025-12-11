@@ -72,11 +72,17 @@ func main() {
 		http.ServeFile(w, r, "web/static/robots.txt")
 	})
 
+	// ads.txt
+	mux.HandleFunc("/ads.txt", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "web/static/ads.txt")
+	})
+
 	// Static Pages
 	mux.HandleFunc("/about", internalHandlers.StaticPageHandler("about", dbClient, cfg))
 	mux.HandleFunc("/contact", internalHandlers.StaticPageHandler("contact", dbClient, cfg))
 	mux.HandleFunc("/privacy", internalHandlers.StaticPageHandler("privacy", dbClient, cfg))
 	mux.HandleFunc("/terms", internalHandlers.StaticPageHandler("terms", dbClient, cfg))
+	mux.HandleFunc("/sources", internalHandlers.StaticPageHandler("sources", dbClient, cfg))
 
 	// Static files
 	fs := http.FileServer(http.Dir("web/static"))

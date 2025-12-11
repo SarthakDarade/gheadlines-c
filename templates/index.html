@@ -12,7 +12,8 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <div>
                 {{if .FeaturedArticle.CategoryObj}}
-                <span class="inline-block px-3 py-1 bg-white bg-opacity-20 rounded-full text-sm font-semibold mb-4" style="background-color: {{.FeaturedArticle.CategoryObj.Color}}40;">
+                <span class="inline-block px-3 py-1 bg-white bg-opacity-20 rounded-full text-sm font-semibold mb-4"
+                    style="background-color: {{.FeaturedArticle.CategoryObj.Color}}40;">
                     {{.FeaturedArticle.CategoryObj.Name}}
                 </span>
                 {{end}}
@@ -26,7 +27,7 @@
                     {{if .FeaturedArticle.Author}}
                     <span class="font-medium">{{.FeaturedArticle.Author}}</span>
                     {{end}}
-                    <time datetime="{{.FeaturedArticle.CreatedAt.Format "2006-01-02T15:04:05Z07:00"}}">
+                    <time datetime="{{.FeaturedArticle.CreatedAt.Format " 2006-01-02T15:04:05Z07:00"}}">
                         {{.FeaturedArticle.CreatedAt.Format "January 2, 2006"}}
                     </time>
                     {{if .FeaturedArticle.ReadTime}}
@@ -34,18 +35,15 @@
                     <span>{{.FeaturedArticle.ReadTime}} read</span>
                     {{end}}
                 </div>
-                <a href="/article/{{.FeaturedArticle.Slug}}" class="inline-block mt-6 px-6 py-3 bg-white text-news-blue font-semibold rounded-lg hover:bg-gray-100 transition-colors">
+                <a href="/article/{{.FeaturedArticle.Slug}}"
+                    class="inline-block mt-6 px-6 py-3 bg-white text-news-blue font-semibold rounded-lg hover:bg-gray-100 transition-colors">
                     Read More →
                 </a>
             </div>
             {{if .FeaturedArticle.ImageURL}}
             <div class="hidden lg:block">
-                <img 
-                    src="{{.FeaturedArticle.ImageURL}}" 
-                    alt="{{.FeaturedArticle.Title}}"
-                    loading="eager"
-                    class="rounded-lg shadow-2xl w-full h-96 object-cover"
-                >
+                <img src="{{.FeaturedArticle.ImageURL}}" alt="{{.FeaturedArticle.Title}}" loading="eager"
+                    class="rounded-lg shadow-2xl w-full h-96 object-cover">
             </div>
             {{end}}
         </div>
@@ -58,11 +56,13 @@
 <section class="sticky top-16 z-40 bg-white border-b border-gray-200 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex space-x-1 overflow-x-auto py-3 scrollbar-hide">
-            <a href="/" class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-news-blue whitespace-nowrap transition-colors {{if not .CurrentCategory}}text-news-blue border-b-2 border-news-blue font-semibold{{end}}">
+            <a href="/"
+                class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-news-blue whitespace-nowrap transition-colors {{if not .CurrentCategory}}text-news-blue border-b-2 border-news-blue font-semibold{{end}}">
                 All News
             </a>
             {{range .Categories}}
-            <a href="/category/{{.Slug}}" class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-news-blue whitespace-nowrap transition-colors {{if eq $.CurrentCategory .Slug}}text-news-blue border-b-2 border-news-blue font-semibold{{end}}">
+            <a href="/category/{{.Slug}}"
+                class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-news-blue whitespace-nowrap transition-colors {{if eq $.CurrentCategory .Slug}}text-news-blue border-b-2 border-news-blue font-semibold{{end}}">
                 {{.Name}}
             </a>
             {{end}}
@@ -76,14 +76,14 @@
     <div class="mb-10">
         <h2 class="text-3xl md:text-4xl font-bold text-news-gray mb-3 font-serif">
             {{if .CurrentCategory}}
-                {{.CurrentCategory}} News
+            {{.CurrentCategory}} News
             {{else}}
-                Latest News
+            Latest News
             {{end}}
         </h2>
         <p class="text-gray-600 text-lg">Stay informed with the latest headlines from around the world</p>
     </div>
-    
+
     {{if .Articles}}
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {{range .Articles}}
@@ -97,4 +97,3 @@
     {{end}}
 </section>
 {{end}}
-

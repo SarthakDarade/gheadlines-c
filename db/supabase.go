@@ -9,6 +9,7 @@ import (
 	"gheadlines/models"
 	"io"
 	"net/http"
+	"net/url"
 	"strings"
 	"time"
 )
@@ -84,6 +85,53 @@ func (c *Client) GetArticles(ctx context.Context, limit int, offset int, categor
 
 	if err := json.Unmarshal(body, &articles); err != nil {
 		fmt.Printf("JSON Decode Error: %v\n", err)
+		return nil, err
+	}
+
+	// Generate slugs and category objects for articles
+	for i := range articles {
+		if articles[i].Slug == "" {
+			articles[i].Slug = generateSlug(articles[i].Title, articles[i].ID)
+		}
+		if articles[i].CategoryObj == nil {
+			articles[i].CategoryObj = getCategoryByName(articles[i].Category)
+		}
+	}
+
+	return articles, nil
+}
+
+// GetArticlesByAuthor fetches articles by a specific author
+func (c *Client) GetArticlesByAuthor(ctx context.Context, authorName string) ([]models.Article, error) {
+	if c.baseURL == "" || c.apiKey == "" {
+		return nil, fmt.Errorf("supabase not configured")
+	}
+
+	// Filter by author column
+	url := fmt.Sprintf("%s/rest/v1/articles?author=eq.%s&order=created_at.desc&limit=20", c.baseURL, url.QueryEscape(authorName))
+
+	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("apikey", c.apiKey)
+	req.Header.Set("Authorization", "Bearer "+c.apiKey)
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Prefer", "return=representation")
+
+	resp, err := c.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("failed to fetch articles by author: status %d", resp.StatusCode)
+	}
+
+	var articles []models.Article
+	if err := json.NewDecoder(resp.Body).Decode(&articles); err != nil {
 		return nil, err
 	}
 
@@ -206,23 +254,55 @@ func (c *Client) GetArticleByID(ctx context.Context, id string, accessToken stri
 	return article, nil
 }
 
-// GetArticleBySlug fetches article by slug (searches by ID prefix in slug)
+// GetArticleBySlug fetches article by slug (searches by ID prefix in slug or slug match)
 func (c *Client) GetArticleBySlug(ctx context.Context, slug string, accessToken string) (*models.Article, error) {
-	// Optimization: Extract ID prefix from slug and search by ID
+	// 1. Try Optimization: Extract ID prefix from slug and search by ID
 	// Slug format: title-slug-idprefix (8 chars)
-	if len(slug) < 9 {
-		// Fallback for short slugs (legacy?) - try title match on recent articles
-		// Or just return error
-		return nil, fmt.Errorf("invalid slug format: %s", slug)
+	// Only try this if the suffix looks like a hex string (simple check, or just try it)
+	if len(slug) >= 9 {
+		idPrefix := slug[len(slug)-8:]
+
+		// Attempt to fetch by ID prefix
+		endpoint := fmt.Sprintf("%s/rest/v1/articles?id::text=like.%s*&limit=5", c.baseURL, idPrefix)
+		req, err := http.NewRequestWithContext(ctx, "GET", endpoint, nil)
+		if err == nil {
+			req.Header.Set("apikey", c.apiKey)
+			if accessToken != "" {
+				req.Header.Set("Authorization", "Bearer "+accessToken)
+			} else {
+				req.Header.Set("Authorization", "Bearer "+c.apiKey)
+			}
+			req.Header.Set("Content-Type", "application/json")
+			req.Header.Set("Prefer", "return=representation")
+
+			resp, err := c.client.Do(req)
+			if err == nil {
+				defer resp.Body.Close()
+				if resp.StatusCode == http.StatusOK {
+					var articles []models.Article
+					if err := json.NewDecoder(resp.Body).Decode(&articles); err == nil && len(articles) > 0 {
+						// Check if we found the exact match
+						for i := range articles {
+							if articles[i].Slug == "" {
+								articles[i].Slug = generateSlug(articles[i].Title, articles[i].ID)
+							}
+							if articles[i].CategoryObj == nil {
+								articles[i].CategoryObj = getCategoryByName(articles[i].Category)
+							}
+							if articles[i].Slug == slug {
+								return &articles[i], nil
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 
-	idPrefix := slug[len(slug)-8:]
-
-	// Search for article with ID starting with this prefix
-	// We fetch the full article directly as we expect only 1 match
-	url := fmt.Sprintf("%s/rest/v1/articles?id=like.%s*&limit=5", c.baseURL, idPrefix)
-
-	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+	// 2. Fallback: Query by 'slug' column directly
+	// This handles cases where the slug doesn't end in the ID prefix
+	endpoint := fmt.Sprintf("%s/rest/v1/articles?slug=eq.%s&limit=1", c.baseURL, url.QueryEscape(slug))
+	req, err := http.NewRequestWithContext(ctx, "GET", endpoint, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -240,21 +320,12 @@ func (c *Client) GetArticleBySlug(ctx context.Context, slug string, accessToken 
 	if err != nil {
 		return nil, err
 	}
-
-	// Retry with anon key if JWT is expired (401)
-	if resp.StatusCode == http.StatusUnauthorized && accessToken != "" {
-		resp.Body.Close()
-		req.Header.Set("Authorization", "Bearer "+c.apiKey)
-		resp, err = c.client.Do(req)
-		if err != nil {
-			return nil, err
-		}
-	}
-
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("failed to fetch article: status %d", resp.StatusCode)
+		// If column doesn't exist, we might get 400. In that case, we can't do anything more.
+		// However, return a generic error or nil to simulate NotFound so handler returns 404
+		return nil, fmt.Errorf("failed to fetch article by slug via column query: status %d", resp.StatusCode)
 	}
 
 	var articles []models.Article
@@ -262,22 +333,20 @@ func (c *Client) GetArticleBySlug(ctx context.Context, slug string, accessToken 
 		return nil, err
 	}
 
-	// Find the exact match
-	for i := range articles {
-		// Generate slug to verify
-		if articles[i].Slug == "" {
-			articles[i].Slug = generateSlug(articles[i].Title, articles[i].ID)
-		}
-		if articles[i].CategoryObj == nil {
-			articles[i].CategoryObj = getCategoryByName(articles[i].Category)
-		}
-
-		if articles[i].Slug == slug {
-			return &articles[i], nil
-		}
+	if len(articles) == 0 {
+		return nil, fmt.Errorf("article not found with slug: %s", slug)
 	}
 
-	return nil, fmt.Errorf("article not found with slug: %s", slug)
+	// Process found article
+	article := &articles[0]
+	if article.Slug == "" {
+		article.Slug = slug // It matched the query, so it is this slug
+	}
+	if article.CategoryObj == nil {
+		article.CategoryObj = getCategoryByName(article.Category)
+	}
+
+	return article, nil
 }
 
 // GetCategories fetches all categories
@@ -892,6 +961,46 @@ func (c *Client) GetEditorialTeamMember(ctx context.Context, slug string) (*mode
 	url := fmt.Sprintf("%s/rest/v1/editorial_team?slug=eq.%s&limit=1", c.baseURL, slug)
 
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("apikey", c.apiKey)
+	req.Header.Set("Authorization", "Bearer "+c.apiKey)
+	req.Header.Set("Prefer", "return=representation")
+
+	resp, err := c.client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("failed to fetch team member: status %d", resp.StatusCode)
+	}
+
+	var members []models.EditorialTeamMember
+	if err := json.NewDecoder(resp.Body).Decode(&members); err != nil {
+		return nil, err
+	}
+
+	if len(members) == 0 {
+		return nil, fmt.Errorf("member not found")
+	}
+
+	return &members[0], nil
+}
+
+// GetEditorialTeamMemberByName fetches a single team member by name
+func (c *Client) GetEditorialTeamMemberByName(ctx context.Context, name string) (*models.EditorialTeamMember, error) {
+	if c.baseURL == "" || c.apiKey == "" {
+		return nil, fmt.Errorf("supabase not configured")
+	}
+
+	// URL encode the name
+	endpoint := fmt.Sprintf("%s/rest/v1/editorial_team?name=eq.%s&limit=1", c.baseURL, url.QueryEscape(name))
+
+	req, err := http.NewRequestWithContext(ctx, "GET", endpoint, nil)
 	if err != nil {
 		return nil, err
 	}

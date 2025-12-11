@@ -30,9 +30,9 @@ type ArticleData struct {
 // ArticleHandler handles individual article pages
 func ArticleHandler(dbClient *db.Client, siteURL string, siteName string, cfg *config.Config) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		// Extract slug from URL path
-		slug := strings.TrimPrefix(r.URL.Path, "/article/")
-		if slug == "" {
+		// Extract slug or ID from URL path
+		param := strings.TrimPrefix(r.URL.Path, "/article/")
+		if param == "" {
 			http.NotFound(w, r)
 			return
 		}
@@ -43,10 +43,17 @@ func ArticleHandler(dbClient *db.Client, siteURL string, siteName string, cfg *c
 			accessToken = cookie.Value
 		}
 
-		// Fetch article
-		article, err := dbClient.GetArticleBySlug(r.Context(), slug, accessToken)
+		// fetch article
+		// First try by ID (if param is UUID)
+		// We trust GetArticleByID to handle non-UUID gracefully (or we can fallback on error)
+		article, err := dbClient.GetArticleByID(r.Context(), param, accessToken)
+		if err != nil {
+			// If not found by ID (or invalid ID format), try by Slug
+			article, err = dbClient.GetArticleBySlug(r.Context(), param, accessToken)
+		}
+
 		if err != nil || article == nil {
-			log.Printf("Article not found for slug: %s, error: %v", slug, err)
+			log.Printf("Article not found for param: %s", param)
 			http.NotFound(w, r)
 			return
 		}
@@ -74,6 +81,19 @@ func ArticleHandler(dbClient *db.Client, siteURL string, siteName string, cfg *c
 		// Get current user
 		user, _ := GetCurrentUser(r, dbClient, cfg)
 
+		// Fetch author details from editorial team if available
+		var authorDetails *models.EditorialTeamMember
+		if article.Author != "" {
+			// Try to find exact match in editorial team
+			details, err := dbClient.GetEditorialTeamMemberByName(r.Context(), article.Author)
+			if err == nil {
+				authorDetails = details
+			} else {
+				// Optional: log error or ignore if not found (regular author)
+				// log.Printf("Author detail fetch error: %v", err)
+			}
+		}
+
 		data := struct {
 			Article         *models.Article
 			RelatedArticles []models.Article
@@ -89,6 +109,7 @@ func ArticleHandler(dbClient *db.Client, siteURL string, siteName string, cfg *c
 			ActiveCategory  string
 			User            *models.User
 			CurrentYear     int
+			AuthorDetails   *models.EditorialTeamMember
 		}{
 			Article:         article,
 			RelatedArticles: relatedArticles,
@@ -104,6 +125,7 @@ func ArticleHandler(dbClient *db.Client, siteURL string, siteName string, cfg *c
 			ActiveCategory:  article.CategoryObj.Slug,
 			User:            user,
 			CurrentYear:     time.Now().Year(),
+			AuthorDetails:   authorDetails,
 		}
 
 		// Render template

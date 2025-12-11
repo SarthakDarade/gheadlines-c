@@ -1,0 +1,5 @@
+tunnel: eb5052f0-41b6-43ad-96c3-279df023e882
+ingress:
+  - hostname: gh.trserver.site
+    service: http://localhost:5000
+  - service: http_status:404

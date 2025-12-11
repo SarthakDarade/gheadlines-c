@@ -14,7 +14,7 @@
                     {{if ge (len .Articles) 1}}
                     {{with index .Articles 0}}
                     <article class="group cursor-pointer mb-8">
-                        <a href="/article/{{.Slug}}" class="block">
+                        <a href="/article/{{.ID}}" class="block">
                             <div class="relative aspect-[16/9] overflow-hidden rounded-sm mb-4 shadow-sm">
                                 <img src="{{.ImageURL}}" alt="{{.Title}}"
                                     class="w-full h-full object-cover transition duration-700 group-hover:scale-105">
@@ -49,7 +49,7 @@
                         {{range $i, $a := .Articles}}
                         {{if and (gt $i 0) (lt $i 3)}}
                         <article class="group flex flex-col h-full">
-                            <a href="/article/{{.Slug}}" class="block aspect-[3/2] overflow-hidden rounded-sm mb-3">
+                            <a href="/article/{{.ID}}" class="block aspect-[3/2] overflow-hidden rounded-sm mb-3">
                                 <img src="{{.ImageURL}}" alt="{{.Title}}"
                                     class="w-full h-full object-cover transition duration-500 group-hover:scale-105">
                             </a>
@@ -58,7 +58,7 @@
                                     class="text-[10px] font-bold uppercase tracking-widest text-primary mb-2 block">{{.Category}}</span>
                                 <h2
                                     class="text-xl font-serif-display font-bold text-gray-900 leading-tight mb-2 group-hover:text-primary transition-colors">
-                                    <a href="/article/{{.Slug}}">{{.Title}}</a>
+                                    <a href="/article/{{.ID}}">{{.Title}}</a>
                                 </h2>
                                 <p class="text-sm text-gray-500 font-serif-body line-clamp-2">{{.Excerpt}}</p>
                             </div>
@@ -114,7 +114,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         {{range .CountryNews}}
                         <article class="flex gap-4 group">
-                            <a href="/article/{{.Slug}}"
+                            <a href="/article/{{.ID}}"
                                 class="block w-1/3 aspect-[4/3] overflow-hidden rounded-sm shrink-0">
                                 <img src="{{.ImageURL}}" alt="{{.Title}}"
                                     class="w-full h-full object-cover transition duration-500 group-hover:scale-105">
@@ -124,7 +124,7 @@
                                     class="text-[10px] font-bold uppercase tracking-widest text-primary mb-1 block">{{.Category}}</span>
                                 <h4
                                     class="text-lg font-serif-display font-bold text-gray-900 leading-tight mb-2 group-hover:text-primary transition-colors">
-                                    <a href="/article/{{.Slug}}">{{.Title}}</a>
+                                    <a href="/article/{{.ID}}">{{.Title}}</a>
                                 </h4>
                                 <div class="text-[10px] text-gray-400 uppercase tracking-wider">{{.Date}}</div>
                             </div>
@@ -146,14 +146,13 @@
                         {{if and (gt $i 2) (lt $i 4)}}
                         <div class="md:col-span-2">
                             <article class="group relative">
-                                <a href="/article/{{.Slug}}"
-                                    class="block aspect-[16/9] overflow-hidden rounded-sm mb-3">
+                                <a href="/article/{{.ID}}" class="block aspect-[16/9] overflow-hidden rounded-sm mb-3">
                                     <img src="{{.ImageURL}}" alt="{{.Title}}"
                                         class="w-full h-full object-cover transition duration-500 group-hover:scale-105">
                                 </a>
                                 <h2
                                     class="text-2xl font-serif-display font-bold text-gray-900 leading-tight mb-2 group-hover:text-primary transition-colors">
-                                    <a href="/article/{{.Slug}}">{{.Title}}</a>
+                                    <a href="/article/{{.ID}}">{{.Title}}</a>
                                 </h2>
                                 <p class="text-gray-600 font-serif-body leading-relaxed">{{.Excerpt}}</p>
                             </article>
@@ -168,7 +167,7 @@
                             <article class="pt-6 first:pt-0 group">
                                 <h3
                                     class="text-lg font-serif-display font-bold text-gray-900 leading-tight mb-1 group-hover:text-primary transition-colors">
-                                    <a href="/article/{{.Slug}}">{{.Title}}</a>
+                                    <a href="/article/{{.ID}}">{{.Title}}</a>
                                 </h3>
                                 <div class="text-[10px] text-gray-400 uppercase tracking-wider">{{.Date}}</div>
                             </article>
@@ -196,7 +195,7 @@
                                 class="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2 block">{{.Category}}</span>
                             <h3
                                 class="text-lg font-serif-display font-bold text-gray-900 leading-tight mb-2 group-hover:text-primary transition-colors">
-                                <a href="/article/{{.Slug}}">{{.Title}}</a>
+                                <a href="/article/{{.ID}}">{{.Title}}</a>
                             </h3>
                         </article>
                         {{end}}
@@ -228,7 +227,7 @@
                             <div class="p-5 flex-1 flex flex-col">
                                 <h3
                                     class="text-lg font-bold font-serif-display text-gray-900 leading-tight mb-2 group-hover:text-green-600 transition-colors flex-1">
-                                    <a href="/article/{{.Slug}}">{{.Title}}</a>
+                                    <a href="/article/{{.ID}}">{{.Title}}</a>
                                 </h3>
                                 <div
                                     class="flex items-center justify-between mt-4 text-xs text-gray-400 border-t border-gray-50 pt-3">

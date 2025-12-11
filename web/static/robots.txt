@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin/
 Disallow: /api/
 
-Sitemap: http://localhost:5000/sitemap.xml
+Sitemap: https://gh.trserver.site/sitemap.xml

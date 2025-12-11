@@ -61,10 +61,10 @@ func RSSHandler(dbClient *db.Client, siteURL string, siteName string) http.Handl
 		for _, a := range articles {
 			item := Item{
 				Title:       a.Title,
-				Link:        siteURL + "/article/" + a.Slug,
+				Link:        siteURL + "/article/" + a.ID,
 				Description: a.Excerpt,
 				PubDate:     a.CreatedAt.Format(time.RFC1123),
-				GUID:        siteURL + "/article/" + a.Slug,
+				GUID:        siteURL + "/article/" + a.ID,
 			}
 
 			// Add image enclosure if available
