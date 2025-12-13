@@ -69,9 +69,9 @@
     <div class="container mx-auto px-4">
         <div class="flex justify-between items-center h-16 md:h-20">
             <!-- Mobile Menu Button -->
-            <button class="md:hidden p-2 text-gray-900"
+            <button class="md:hidden p-2 text-gray-900" aria-label="Toggle mobile menu"
                 onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
-                <i class="ph ph-list text-2xl"></i>
+                <i class="ph ph-list text-2xl" aria-hidden="true"></i>
             </button>
 
             <!-- Logo -->
@@ -124,8 +124,8 @@
 
             <!-- Search & Actions -->
             <div class="flex items-center gap-4">
-                <a href="/search" class="p-2 text-gray-500 hover:text-primary transition">
-                    <i class="ph ph-magnifying-glass text-xl"></i>
+                <a href="/search" class="p-2 text-gray-500 hover:text-primary transition" aria-label="Search">
+                    <i class="ph ph-magnifying-glass text-xl" aria-hidden="true"></i>
                 </a>
                 <a href="/subscribe"
                     class="hidden md:inline-block bg-primary text-white px-5 py-2 rounded-sm text-xs font-bold uppercase tracking-wider hover:bg-[#002a4d] transition shadow-sm">Subscribe</a>
