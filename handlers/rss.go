@@ -43,6 +43,9 @@ func RSSHandler(dbClient *db.Client, siteURL string, siteName string) http.Handl
 			Items         []RSSItem
 		}
 
+		// Use RFC1123Z (e.g. Mon, 02 Jan 2006 15:04:05 -0700) which is standard for RSS 2.0
+		now := time.Now().Format(time.RFC1123Z)
+
 		data := RSSData{
 			SiteName:      siteName,
 			SiteURL:       siteURL,
@@ -50,7 +53,7 @@ func RSSHandler(dbClient *db.Client, siteURL string, siteName string) http.Handl
 			Language:      "en-us",
 			Copyright:     "Copyright (C) " + time.Now().Format("2006") + " " + siteName,
 			Docs:          siteURL + "/rss",
-			LastBuildDate: time.Now().Format(time.RFC1123Z),
+			LastBuildDate: now,
 			AtomLink:      siteURL + "/rss",
 			Items:         make([]RSSItem, 0, len(articles)),
 		}
@@ -66,9 +69,12 @@ func RSSHandler(dbClient *db.Client, siteURL string, siteName string) http.Handl
 				author = siteName
 			}
 
-			// Strip newlines from title/excerpt to be safe inside CDATA
-			title := strings.ReplaceAll(a.Title, "\n", " ")
-			desc := strings.ReplaceAll(a.Excerpt, "\n", " ")
+			// Clean potentially problematic characters
+			title := strings.TrimSpace(a.Title)
+			desc := strings.TrimSpace(a.Excerpt)
+			// Remove newlines from description to keep it clean in snippet view, though CDATA handles it
+			desc = strings.ReplaceAll(desc, "\n", " ")
+			desc = strings.ReplaceAll(desc, "\r", "")
 
 			item := RSSItem{
 				Title:       title,
@@ -83,8 +89,8 @@ func RSSHandler(dbClient *db.Client, siteURL string, siteName string) http.Handl
 			data.Items = append(data.Items, item)
 		}
 
-		// Define the template with strict formatting matching TOI
-		// Note: We use printf for CDATA to ensure it's not escaped
+		// Defined template with NO whitespace inside CDATA for URLs
+		// This is critical for feed validation. " http://..." is an invalid URL.
 		const rssTemplate = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:media="http://search.yahoo.com/mrss/">
 <channel>
@@ -102,15 +108,15 @@ func RSSHandler(dbClient *db.Client, siteURL string, siteName string) http.Handl
 </image>
 <lastBuildDate>{{.LastBuildDate}}</lastBuildDate>
 {{range .Items}}<item>
-<title><![CDATA[ {{.Title}} ]]></title>
-<description><![CDATA[ {{.Description}} ]]></description>
-<link><![CDATA[ {{.Link}} ]]></link>
-<guid><![CDATA[ {{.GUID}} ]]></guid>
+<title><![CDATA[{{.Title}}]]></title>
+<description><![CDATA[{{.Description}}]]></description>
+<link><![CDATA[{{.Link}}]]></link>
+<guid><![CDATA[{{.GUID}}]]></guid>
 <pubDate>{{.PubDate}}</pubDate>
-<dc:creator>{{.Author}}</dc:creator>
+<dc:creator><![CDATA[{{.Author}}]]></dc:creator>
 {{if .ImageURL}}<enclosure url="{{.ImageURL}}" type="image/jpeg" />{{end}}
 {{if .ImageURL}}<media:content url="{{.ImageURL}}" type="image/jpeg" medium="image" />{{end}}
-{{if .Content}}<content:encoded><![CDATA[ {{.Content}} ]]></content:encoded>{{end}}
+{{if .Content}}<content:encoded><![CDATA[{{.Content}}]]></content:encoded>{{end}}
 </item>
 {{end}}</channel>
 </rss>`
