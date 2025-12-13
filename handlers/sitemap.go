@@ -109,6 +109,7 @@ func SitemapHandler(dbClient *db.Client, siteURL string) http.HandlerFunc {
 		w.WriteHeader(http.StatusOK)
 
 		// Write XML
+		w.Write([]byte(xml.Header))
 		encoder := xml.NewEncoder(w)
 		encoder.Indent("", "  ")
 		if err := encoder.Encode(sitemap); err != nil {
@@ -155,8 +156,12 @@ func NewsSitemapHandler(dbClient *db.Client, siteURL string, siteName string) ht
 		for _, article := range recentArticles {
 			pubDate := article.CreatedAt
 			if !pubDate.IsZero() {
+				loc := fmt.Sprintf("%s/article/%s", siteURL, article.Slug)
+				if article.Slug == "" {
+					loc = fmt.Sprintf("%s/article/%s", siteURL, article.ID)
+				}
 				sitemap.URLs = append(sitemap.URLs, NewsURL{
-					Loc: fmt.Sprintf("%s/article/%s", siteURL, article.ID),
+					Loc: loc,
 					News: NewsMeta{
 						Publication: NewsPublication{
 							Name:     siteName,
