@@ -36,7 +36,7 @@ func Load() (*Config, error) {
 		CloudflareAccountID:   getEnv("CLOUDFLARE_ACCOUNT_ID", ""),
 		CloudflareAPIKey:      getEnv("CLOUDFLARE_API_KEY", ""),
 		CloudflareImagesToken: getEnv("CLOUDFLARE_IMAGES_TOKEN", ""),
-		SiteURL:               getEnv("SITE_URL", "https://gh.trserver.site"),
+		SiteURL:               getEnv("SITE_URL", "https://gheadlines.com"),
 		SiteName:              getEnv("SITE_NAME", "Global Headlines"),
 		AdminUsername:         getEnv("ADMIN_USERNAME", "admin"),
 		// Default password is "admin" hashed with bcrypt (cost 10)
