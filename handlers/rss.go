@@ -1,77 +1,15 @@
 package handlers
 
 import (
-	"encoding/xml"
-	"fmt"
+	"bytes"
 	"gheadlines/db"
 	"net/http"
+	"strings"
+	"text/template"
 	"time"
 )
 
-type RSS struct {
-	XMLName      xml.Name `xml:"rss"`
-	Version      string   `xml:"version,attr"`
-	XmlnsAtom    string   `xml:"xmlns:atom,attr"`
-	XmlnsDc      string   `xml:"xmlns:dc,attr"`
-	XmlnsMedia   string   `xml:"xmlns:media,attr"`   // Keeping for Google Discover support
-	XmlnsContent string   `xml:"xmlns:content,attr"` // Keeping for full content support
-	Channel      Channel  `xml:"channel"`
-}
-
-type Channel struct {
-	AtomLink      *AtomLink     `xml:"atom:link,omitempty"`
-	Title         string        `xml:"title"`
-	Link          string        `xml:"link"`
-	Description   string        `xml:"description"`
-	Language      string        `xml:"language"`
-	Copyright     string        `xml:"copyright"`
-	Docs          string        `xml:"docs"`
-	Image         *ChannelImage `xml:"image,omitempty"`
-	LastBuildDate string        `xml:"lastBuildDate"`
-	Item          []Item        `xml:"item"`
-}
-
-type ChannelImage struct {
-	Title string `xml:"title"`
-	Link  string `xml:"link"`
-	URL   string `xml:"url"`
-}
-
-type AtomLink struct {
-	Href string `xml:"href,attr"`
-	Rel  string `xml:"rel,attr"`
-	Type string `xml:"type,attr"`
-}
-
-type Item struct {
-	Title          CDATA         `xml:"title"`
-	Description    CDATA         `xml:"description"`
-	Link           CDATA         `xml:"link"`
-	GUID           CDATA         `xml:"guid"`
-	PubDate        string        `xml:"pubDate"`
-	Creator        string        `xml:"dc:creator,omitempty"`
-	Enclosure      *Enclosure    `xml:"enclosure,omitempty"`
-	MediaContent   *MediaContent `xml:"media:content,omitempty"`
-	ContentEncoded *CDATA        `xml:"content:encoded,omitempty"`
-}
-
-type Enclosure struct {
-	URL    string `xml:"url,attr"`
-	Length string `xml:"length,attr,omitempty"` // Added length
-	Type   string `xml:"type,attr"`
-}
-
-type MediaContent struct {
-	URL    string `xml:"url,attr"`
-	Type   string `xml:"type,attr"`
-	Medium string `xml:"medium,attr"`
-}
-
-type CDATA struct {
-	Value string `xml:",cdata"`
-}
-
-// RSSHandler generates and serves RSS feed
+// RSSHandler generates and serves RSS feed using templates for precise control
 func RSSHandler(dbClient *db.Client, siteURL string, siteName string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Fetch latest 100 articles
@@ -81,87 +19,116 @@ func RSSHandler(dbClient *db.Client, siteURL string, siteName string) http.Handl
 			return
 		}
 
-		rss := RSS{
-			Version:      "2.0",
-			XmlnsAtom:    "http://www.w3.org/2005/Atom",
-			XmlnsDc:      "http://purl.org/dc/elements/1.1/",
-			XmlnsMedia:   "http://search.yahoo.com/mrss/",
-			XmlnsContent: "http://purl.org/rss/1.0/modules/content/",
-			Channel: Channel{
-				Title:         siteName,
-				Link:          siteURL,
-				Description:   "Latest news and updates from " + siteName,
-				Language:      "en-us", // TOI uses en-gb, we can stick to en-us or make dynamic
-				Copyright:     fmt.Sprintf("Copyright (C) %d %s", time.Now().Year(), siteName),
-				Docs:          siteURL + "/rss",
-				LastBuildDate: time.Now().Format(time.RFC1123Z),
-				AtomLink: &AtomLink{
-					Href: siteURL + "/rss",
-					Rel:  "self",
-					Type: "application/rss+xml",
-				},
-				// Add a default logo/image for the channel
-				Image: &ChannelImage{
-					Title: siteName,
-					Link:  siteURL,
-					URL:   siteURL + "/static/gheadlineicon.png", // Ensure this path is correct
-				},
-				Item: []Item{},
-			},
+		// Prepare data for template
+		type RSSItem struct {
+			Title       string
+			Link        string
+			Description string
+			Author      string
+			PubDate     string
+			GUID        string
+			ImageURL    string
+			Content     string
+		}
+
+		type RSSData struct {
+			SiteName      string
+			SiteURL       string
+			Description   string
+			Language      string
+			Copyright     string
+			Docs          string
+			LastBuildDate string
+			AtomLink      string
+			Items         []RSSItem
+		}
+
+		data := RSSData{
+			SiteName:      siteName,
+			SiteURL:       siteURL,
+			Description:   "Latest news and updates from " + siteName,
+			Language:      "en-us",
+			Copyright:     "Copyright (C) " + time.Now().Format("2006") + " " + siteName,
+			Docs:          siteURL + "/rss",
+			LastBuildDate: time.Now().Format(time.RFC1123Z),
+			AtomLink:      siteURL + "/rss",
+			Items:         make([]RSSItem, 0, len(articles)),
 		}
 
 		for _, a := range articles {
-			link := fmt.Sprintf("%s/article/%s", siteURL, a.Slug)
+			link := siteURL + "/article/" + a.Slug
 			if a.Slug == "" {
-				link = fmt.Sprintf("%s/article/%s", siteURL, a.ID)
+				link = siteURL + "/article/" + a.ID
 			}
 
-			// Sanitize or fallback for author
 			author := a.Author
 			if author == "" {
 				author = siteName
 			}
 
-			item := Item{
-				Title:       CDATA{Value: a.Title},
-				Description: CDATA{Value: a.Excerpt},
-				Link:        CDATA{Value: link},
-				GUID:        CDATA{Value: link},
+			// Strip newlines from title/excerpt to be safe inside CDATA
+			title := strings.ReplaceAll(a.Title, "\n", " ")
+			desc := strings.ReplaceAll(a.Excerpt, "\n", " ")
+
+			item := RSSItem{
+				Title:       title,
+				Link:        link,
+				Description: desc,
+				Author:      author,
 				PubDate:     a.CreatedAt.Format(time.RFC1123Z),
-				Creator:     author,
+				GUID:        link,
+				ImageURL:    a.ImageURL,
+				Content:     a.Content,
 			}
-
-			if a.Content != "" {
-				item.ContentEncoded = &CDATA{Value: a.Content}
-			}
-
-			// Add image enclosure and media:content
-			if a.ImageURL != "" {
-				// Standard Enclosure
-				item.Enclosure = &Enclosure{
-					URL:    a.ImageURL,
-					Type:   "image/jpeg",
-					Length: "0", // Supabase doesn't easily give us size, using 0 or omitted is better than wrong. TOI has it.
-				}
-				// Media RSS (Google News/Discovery)
-				item.MediaContent = &MediaContent{
-					URL:    a.ImageURL,
-					Type:   "image/jpeg",
-					Medium: "image",
-				}
-			}
-
-			rss.Channel.Item = append(rss.Channel.Item, item)
+			data.Items = append(data.Items, item)
 		}
 
-		w.Header().Set("Content-Type", "application/rss+xml; charset=utf-8")
+		// Define the template with strict formatting matching TOI
+		// Note: We use printf for CDATA to ensure it's not escaped
+		const rssTemplate = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:media="http://search.yahoo.com/mrss/">
+<channel>
+<atom:link href="{{.AtomLink}}" rel="self" type="application/rss+xml" />
+<title>{{.SiteName}}</title>
+<link>{{.SiteURL}}</link>
+<description>{{.Description}}</description>
+<language>{{.Language}}</language>
+<copyright>{{.Copyright}}</copyright>
+<docs>{{.Docs}}</docs>
+<image>
+<title>{{.SiteName}}</title>
+<link>{{.SiteURL}}</link>
+<url>{{.SiteURL}}/static/gheadlineicon.png</url>
+</image>
+<lastBuildDate>{{.LastBuildDate}}</lastBuildDate>
+{{range .Items}}<item>
+<title><![CDATA[ {{.Title}} ]]></title>
+<description><![CDATA[ {{.Description}} ]]></description>
+<link><![CDATA[ {{.Link}} ]]></link>
+<guid><![CDATA[ {{.GUID}} ]]></guid>
+<pubDate>{{.PubDate}}</pubDate>
+<dc:creator>{{.Author}}</dc:creator>
+{{if .ImageURL}}<enclosure url="{{.ImageURL}}" type="image/jpeg" />{{end}}
+{{if .ImageURL}}<media:content url="{{.ImageURL}}" type="image/jpeg" medium="image" />{{end}}
+{{if .Content}}<content:encoded><![CDATA[ {{.Content}} ]]></content:encoded>{{end}}
+</item>
+{{end}}</channel>
+</rss>`
+
+		tmpl, err := template.New("rss").Parse(rssTemplate)
+		if err != nil {
+			http.Error(w, "Failed to parse RSS template", http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/xml; charset=utf-8")
 		w.WriteHeader(http.StatusOK)
 
-		w.Write([]byte(xml.Header))
-		encoder := xml.NewEncoder(w)
-		encoder.Indent("", "  ")
-		if err := encoder.Encode(rss); err != nil {
-			http.Error(w, "Failed to encode RSS", http.StatusInternalServerError)
+		var buffer bytes.Buffer
+		if err := tmpl.Execute(&buffer, data); err != nil {
+			// In production, log error
+			return
 		}
+		w.Write(buffer.Bytes())
 	}
 }
