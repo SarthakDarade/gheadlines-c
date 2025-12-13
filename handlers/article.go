@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"gheadlines/config"
 	"gheadlines/db"
 	"gheadlines/internal/utils"
@@ -75,8 +76,9 @@ func ArticleHandler(dbClient *db.Client, siteURL string, siteName string, cfg *c
 		categories, _ := dbClient.GetCategories(r.Context(), accessToken)
 
 		// Generate JSON-LD
-		jsonLD := utils.GenerateJSONLD(article, siteURL, siteName)
-		jsonLDBytes, _ := json.Marshal(jsonLD)
+		jsonLDData := utils.GenerateJSONLD(article, siteURL, siteName)
+		jsonLDBytes, _ := json.Marshal(jsonLDData)
+		jsonLDString := fmt.Sprintf(`<script type="application/ld+json">%s</script>`, string(jsonLDBytes))
 
 		// Get current user
 		user, _ := GetCurrentUser(r, dbClient, cfg)
@@ -117,7 +119,7 @@ func ArticleHandler(dbClient *db.Client, siteURL string, siteName string, cfg *c
 			SiteName:        siteName,
 			SiteURL:         siteURL,
 			CurrentDate:     time.Now().Format("Monday, January 2, 2006"),
-			JSONLD:          template.HTML(jsonLDBytes),
+			JSONLD:          template.HTML(jsonLDString),
 			Title:           article.Title,
 			Description:     article.Excerpt,
 			ImageURL:        article.ImageURL,
