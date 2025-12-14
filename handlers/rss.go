@@ -114,7 +114,7 @@ func RSSHandler(dbClient *db.Client, siteURL string, siteName string) http.Handl
 <guid><![CDATA[{{.GUID}}]]></guid>
 <pubDate>{{.PubDate}}</pubDate>
 <dc:creator><![CDATA[{{.Author}}]]></dc:creator>
-{{if .ImageURL}}<enclosure url="{{.ImageURL}}" type="image/jpeg" />{{end}}
+{{if .ImageURL}}<enclosure url="{{.ImageURL}}" length="0" type="image/jpeg" />{{end}}
 {{if .ImageURL}}<media:content url="{{.ImageURL}}" type="image/jpeg" medium="image" />{{end}}
 {{if .Content}}<content:encoded><![CDATA[{{.Content}}]]></content:encoded>{{end}}
 </item>
