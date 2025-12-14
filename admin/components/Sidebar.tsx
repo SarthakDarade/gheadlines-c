@@ -12,13 +12,15 @@ import {
     Settings,
     LogOut,
     ChevronRight,
-    Zap
+    Zap,
+    Globe
 } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
 
 const menuItems = [
     { path: '/', label: 'Overview', icon: LayoutDashboard },
     { path: '/articles', label: 'Content', icon: FileText },
+    { path: '/sources', label: 'Sources', icon: Globe },
     { path: '/live', label: 'Live News', icon: Radio },
     { path: '/breaking', label: 'Breaking Alerts', icon: Zap },
     { path: '/trending', label: 'Trending', icon: TrendingUp },

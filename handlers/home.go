@@ -15,17 +15,21 @@ import (
 
 // HomeData holds data for the homepage template
 type HomeData struct {
-	Articles        []models.Article
-	FeaturedArticle *models.Article
-	Categories      []models.Category
-	CurrentCategory string
-	MetaTags        template.HTML
-	CurrentYear     int
-	User            *models.User
-	TrendingNews    []models.TrendingNews
-	LiveUpdates     []models.LiveUpdate
-	SportsArticles  []models.Article
-	CountryNews     []models.Article
+	Articles              []models.Article
+	FeaturedArticle       *models.Article
+	Categories            []models.Category
+	CurrentCategory       string
+	MetaTags              template.HTML
+	CurrentYear           int
+	User                  *models.User
+	TrendingNews          []models.TrendingNews
+	LiveUpdates           []models.LiveUpdate
+	SportsArticles        []models.Article
+	CountryNews           []models.Article
+	BusinessArticles      []models.Article
+	TechnologyArticles    []models.Article
+	EntertainmentArticles []models.Article
+	HealthArticles        []models.Article
 }
 
 // HomeHandler handles the homepage and category pages
@@ -114,6 +118,34 @@ func HomeHandler(dbClient *db.Client, siteURL string, siteName string, cfg *conf
 			countryNews, _ = dbClient.GetArticles(r.Context(), 4, 12, nil, accessToken)
 		}
 
+		// Fetch Business Articles
+		var businessArticles []models.Article
+		if categorySlug == "" {
+			cat := "Business"
+			businessArticles, _ = dbClient.GetArticles(r.Context(), 4, 0, &cat, accessToken)
+		}
+
+		// Fetch Technology Articles
+		var technologyArticles []models.Article
+		if categorySlug == "" {
+			cat := "Technology"
+			technologyArticles, _ = dbClient.GetArticles(r.Context(), 4, 0, &cat, accessToken)
+		}
+
+		// Fetch Entertainment Articles
+		var entertainmentArticles []models.Article
+		if categorySlug == "" {
+			cat := "Entertainment"
+			entertainmentArticles, _ = dbClient.GetArticles(r.Context(), 4, 0, &cat, accessToken)
+		}
+
+		// Fetch Health Articles
+		var healthArticles []models.Article
+		if categorySlug == "" {
+			cat := "Health"
+			healthArticles, _ = dbClient.GetArticles(r.Context(), 4, 0, &cat, accessToken)
+		}
+
 		// Generate pages slice (simple version: all pages up to a limit)
 		// TODO: Implement smart pagination (1 ... 4 5 6 ... 10)
 		var pages []int
@@ -143,47 +175,55 @@ func HomeHandler(dbClient *db.Client, siteURL string, siteName string, cfg *conf
 
 		// Prepare data
 		data := struct {
-			SiteName        string
-			SiteURL         string
-			CurrentDate     string
-			Articles        []models.Article
-			FeaturedArticle *models.Article
-			Categories      []models.Category
-			ActiveCategory  string
-			CurrentCategory string
-			JSONLD          template.HTML
-			Title           string
-			Description     string
-			ImageURL        string
-			CurrentPath     string
-			User            *models.User
-			CurrentYear     int
-			TrendingNews    []models.TrendingNews
-			LiveUpdates     []models.LiveUpdate
-			SportsArticles  []models.Article
-			CountryNews     []models.Article
-			CurrentPage     int
-			TotalPages      int
-			Pages           []int
+			SiteName              string
+			SiteURL               string
+			CurrentDate           string
+			Articles              []models.Article
+			FeaturedArticle       *models.Article
+			Categories            []models.Category
+			ActiveCategory        string
+			CurrentCategory       string
+			JSONLD                template.HTML
+			Title                 string
+			Description           string
+			ImageURL              string
+			CurrentPath           string
+			User                  *models.User
+			CurrentYear           int
+			TrendingNews          []models.TrendingNews
+			LiveUpdates           []models.LiveUpdate
+			SportsArticles        []models.Article
+			CountryNews           []models.Article
+			BusinessArticles      []models.Article
+			TechnologyArticles    []models.Article
+			EntertainmentArticles []models.Article
+			HealthArticles        []models.Article
+			CurrentPage           int
+			TotalPages            int
+			Pages                 []int
 		}{
-			SiteName:        siteName,
-			SiteURL:         siteURL,
-			CurrentDate:     time.Now().Format("Monday, January 2, 2006"),
-			Articles:        articles,
-			Categories:      categories,
-			ActiveCategory:  categorySlug,
-			CurrentCategory: currentCategoryName,
-			Title:           currentCategoryName, // Will be empty for home
-			CurrentPath:     r.URL.Path,
-			User:            user,
-			CurrentYear:     time.Now().Year(),
-			TrendingNews:    trendingNews,
-			LiveUpdates:     liveUpdates,
-			SportsArticles:  sportsArticles,
-			CountryNews:     countryNews,
-			CurrentPage:     currentPage,
-			TotalPages:      totalPages,
-			Pages:           pages,
+			SiteName:              siteName,
+			SiteURL:               siteURL,
+			CurrentDate:           time.Now().Format("Monday, January 2, 2006"),
+			Articles:              articles,
+			Categories:            categories,
+			ActiveCategory:        categorySlug,
+			CurrentCategory:       currentCategoryName,
+			Title:                 currentCategoryName, // Will be empty for home
+			CurrentPath:           r.URL.Path,
+			User:                  user,
+			CurrentYear:           time.Now().Year(),
+			TrendingNews:          trendingNews,
+			LiveUpdates:           liveUpdates,
+			SportsArticles:        sportsArticles,
+			CountryNews:           countryNews,
+			BusinessArticles:      businessArticles,
+			TechnologyArticles:    technologyArticles,
+			EntertainmentArticles: entertainmentArticles,
+			HealthArticles:        healthArticles,
+			CurrentPage:           currentPage,
+			TotalPages:            totalPages,
+			Pages:                 pages,
 		}
 
 		// Logic for Featured Article (First one)
